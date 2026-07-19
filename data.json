@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-07-19T14:22:49.263Z",
+  "root": "Temas",
+  "folders": [
+    {
+      "type": "folder",
+      "name": "Escritores",
+      "path": "Temas/Escritores",
+      "folders": [],
+      "fichas": [
+        {
+          "type": "ficha",
+          "title": "George Orwell",
+          "subtitle": "1903–1950",
+          "path": "Temas/Escritores/George Orwell (1903–1950).pdf",
+          "size": 551358
+        }
+      ],
+      "counts": {
+        "fichas": 1,
+        "subtemas": 0
+      }
+    },
+    {
+      "type": "folder",
+      "name": "Historia",
+      "path": "Temas/Historia",
+      "folders": [],
+      "fichas": [
+        {
+          "type": "ficha",
+          "title": "Guerra Civil Española",
+          "subtitle": "1923–1939",
+          "path": "Temas/Historia/Guerra Civil Española (1923–1939).pdf",
+          "size": 94105
+        }
+      ],
+      "counts": {
+        "fichas": 1,
+        "subtemas": 0
+      }
+    },
+    {
+      "type": "folder",
+      "name": "Personajes",
+      "path": "Temas/Personajes",
+      "folders": [],
+      "fichas": [
+        {
+          "type": "ficha",
+          "title": "Henry Ford",
+          "subtitle": "1863–1947",
+          "path": "Temas/Personajes/Henry Ford (1863–1947).pdf",
+          "size": 1033015
+        },
+        {
+          "type": "ficha",
+          "title": "Marie Curie",
+          "subtitle": "1867–1934",
+          "path": "Temas/Personajes/Marie Curie (1867–1934).pdf",
+          "size": 877962
+        }
+      ],
+      "counts": {
+        "fichas": 2,
+        "subtemas": 0
+      }
+    }
+  ],
+  "fichas": [],
+  "counts": {
+    "fichas": 4,
+    "subtemas": 3
+  }
+}

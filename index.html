@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#4f46e5" />
+<title>Mis Fichas de Estudio</title>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="assets/icon-192.png" />
+<style>
+  :root{
+    --bg:#f5f6fa; --card:#ffffff; --ink:#141726; --muted:#6b7180;
+    --line:#e7e9f0; --shadow:0 6px 20px rgba(20,23,38,.07);
+    --accent:#4f46e5;
+    --radius:18px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f1117; --card:#181b24; --ink:#eef0f6; --muted:#9aa0b0;
+      --line:#262a36; --shadow:0 6px 22px rgba(0,0,0,.4); }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--ink);
+    -webkit-font-smoothing:antialiased; line-height:1.4;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  a{color:inherit}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 16px}
+
+  /* Header */
+  header.top{
+    position:sticky; top:0; z-index:20; backdrop-filter:saturate(1.4) blur(10px);
+    background:color-mix(in srgb, var(--bg) 82%, transparent);
+    border-bottom:1px solid var(--line);
+    padding:calc(env(safe-area-inset-top) + 12px) 0 12px;
+  }
+  .brand{display:flex; align-items:center; gap:11px}
+  .logo{
+    width:38px;height:38px;border-radius:11px;flex:0 0 auto;
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);
+    display:grid;place-items:center;color:#fff;font-size:20px;
+    box-shadow:0 4px 12px rgba(79,70,229,.4);
+  }
+  .brand h1{font-size:18px;margin:0;font-weight:800;letter-spacing:-.02em}
+  .brand p{margin:1px 0 0;font-size:12px;color:var(--muted)}
+  .search{position:relative;margin-top:12px}
+  .search input{
+    width:100%;padding:12px 14px 12px 40px;border-radius:13px;
+    border:1px solid var(--line);background:var(--card);color:var(--ink);
+    font-size:15px;outline:none;transition:border-color .15s, box-shadow .15s;
+  }
+  .search input:focus{border-color:var(--accent);
+    box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent)}
+  .search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);
+    width:18px;height:18px;color:var(--muted)}
+
+  /* Breadcrumb */
+  .crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px;
+    font-size:13px;color:var(--muted);margin:16px 0 4px}
+  .crumbs button{background:none;border:none;color:var(--muted);
+    font-size:13px;cursor:pointer;padding:3px 5px;border-radius:7px}
+  .crumbs button:hover{background:var(--line);color:var(--ink)}
+  .crumbs .cur{color:var(--ink);font-weight:600}
+  .crumbs .sep{opacity:.5}
+
+  .section-label{font-size:12px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);margin:20px 4px 10px}
+
+  /* Grids */
+  .grid{display:grid;gap:13px}
+  .grid.themes{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .grid.cards{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+
+  /* Theme / folder tile */
+  .tile{
+    position:relative;border:none;text-align:left;cursor:pointer;
+    border-radius:var(--radius);padding:16px;color:#fff;overflow:hidden;
+    min-height:112px;display:flex;flex-direction:column;justify-content:space-between;
+    box-shadow:var(--shadow);transition:transform .12s ease, filter .12s;
+  }
+  .tile:active{transform:scale(.97)}
+  .tile:hover{filter:brightness(1.05)}
+  .tile .mono{width:34px;height:34px;border-radius:10px;
+    background:rgba(255,255,255,.22);display:grid;place-items:center;
+    font-weight:800;font-size:17px}
+  .tile .t-name{font-size:16px;font-weight:750;letter-spacing:-.01em;margin-top:8px}
+  .tile .t-meta{font-size:12px;opacity:.85;margin-top:2px}
+  .tile .chev{position:absolute;top:16px;right:14px;opacity:.7}
+
+  /* Ficha card */
+  .ficha{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:15px;cursor:pointer;box-shadow:var(--shadow);
+    display:flex;gap:13px;align-items:flex-start;
+    transition:transform .12s ease, border-color .12s;
+    border-left:4px solid var(--accent);
+  }
+  .ficha:active{transform:scale(.98)}
+  .ficha:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+  .ficha .ic{width:40px;height:40px;border-radius:10px;flex:0 0 auto;
+    display:grid;place-items:center;color:#fff;font-size:18px;
+    background:var(--accent)}
+  .ficha .f-title{font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .ficha .f-sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .ficha .f-path{font-size:11px;color:var(--muted);margin-top:6px;opacity:.85}
+
+  .empty{color:var(--muted);text-align:center;padding:50px 20px;font-size:14px}
+  .count-pill{display:inline-block;font-size:11px;font-weight:700;
+    background:var(--line);color:var(--muted);border-radius:20px;
+    padding:2px 9px;margin-left:6px;vertical-align:middle}
+
+  footer{color:var(--muted);font-size:11.5px;text-align:center;padding:26px 16px 34px}
+  footer span{opacity:.7}
+
+  /* PDF viewer */
+  .viewer{position:fixed;inset:0;z-index:60;background:#20232c;
+    display:none;flex-direction:column}
+  .viewer.open{display:flex}
+  .v-bar{display:flex;align-items:center;gap:10px;
+    padding:calc(env(safe-area-inset-top) + 10px) 14px 10px;
+    background:#171a21;color:#fff;flex:0 0 auto}
+  .v-bar .v-title{font-size:14px;font-weight:650;flex:1;min-width:0;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .v-bar button{background:rgba(255,255,255,.12);border:none;color:#fff;
+    width:38px;height:38px;border-radius:10px;cursor:pointer;font-size:16px;
+    display:grid;place-items:center;flex:0 0 auto}
+  .v-bar button:hover{background:rgba(255,255,255,.22)}
+  .v-bar a.dl{text-decoration:none}
+  .v-pages{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;
+    padding:14px 10px 40px;display:flex;flex-direction:column;
+    align-items:center;gap:14px}
+  .v-pages canvas{max-width:100%;height:auto;border-radius:6px;
+    box-shadow:0 8px 30px rgba(0,0,0,.5);background:#fff}
+  .v-loading{color:#c9cdd8;font-size:14px;padding:40px;text-align:center}
+  .spin{width:26px;height:26px;border:3px solid rgba(255,255,255,.25);
+    border-top-color:#fff;border-radius:50%;margin:0 auto 12px;
+    animation:sp 1s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo">📚</div>
+      <div>
+        <h1>Mis Fichas de Estudio</h1>
+        <p id="brandSub">Cargando…</p>
+      </div>
+    </div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Buscar en todas las fichas…" autocomplete="off" />
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <div class="empty">Cargando fichas…</div>
+</main>
+
+<footer>
+  <span id="foot"></span>
+</footer>
+
+<!-- Visor de PDF -->
+<div class="viewer" id="viewer" aria-hidden="true">
+  <div class="v-bar">
+    <button id="vClose" title="Cerrar" aria-label="Cerrar">✕</button>
+    <div class="v-title" id="vTitle"></div>
+    <a class="dl" id="vOpen" target="_blank" rel="noopener"><button title="Abrir en pestaña nueva" aria-label="Abrir en pestaña nueva">⇗</button></a>
+  </div>
+  <div class="v-pages" id="vPages"></div>
+</div>
+
+<script src="assets/pdfjs/pdf.min.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  const PALETTE = [
+    ["#4f46e5","#7c3aed"], // indigo→violet
+    ["#e11d48","#f43f5e"], // rose
+    ["#0284c7","#0ea5e9"], // sky
+    ["#059669","#10b981"], // emerald
+    ["#d97706","#f59e0b"], // amber
+    ["#7c3aed","#a855f7"], // violet
+    ["#db2777","#ec4899"], // pink
+    ["#0d9488","#14b8a6"], // teal
+    ["#ea580c","#fb923c"], // orange
+    ["#2563eb","#3b82f6"], // blue
+  ];
+  function hash(str){let h=0;for(let i=0;i<str.length;i++){h=(h*31+str.charCodeAt(i))>>>0;}return h;}
+  function themeColors(name){ return PALETTE[hash(name||"·")%PALETTE.length]; }
+  function encPath(p){ return p.split("/").map(encodeURIComponent).join("/"); }
+  function monogram(name){ const c=(name||"·").trim(); return (c[0]||"·").toUpperCase(); }
+
+  if (window.pdfjsLib){
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "assets/pdfjs/pdf.worker.min.js";
+  }
+
+  const state = { data:null, stack:[] }; // stack = array de nodos-carpeta (breadcrumb)
+  const main = document.getElementById("main");
+  const foot = document.getElementById("foot");
+  const brandSub = document.getElementById("brandSub");
+  const qInput = document.getElementById("q");
+
+  // ---- Carga de datos (data.json generado automáticamente) ----
+  async function load(){
+    try{
+      const res = await fetch("data.json?_=" + Date.now(), {cache:"no-cache"});
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      state.data = await res.json();
+      brandSub.textContent =
+        `${state.data.counts.fichas} fichas · ${state.data.counts.subtemas} temas`;
+      foot.textContent = "Se actualiza sola al añadir PDFs · " +
+        new Date(state.data.generatedAt).toLocaleDateString("es-ES");
+      render();
+    }catch(err){
+      main.innerHTML = `<div class="empty">No se pudieron cargar las fichas.<br><small>${err.message}</small></div>`;
+      brandSub.textContent = "Error de carga";
+    }
+  }
+
+  // ---- Nodo actual según el breadcrumb ----
+  function currentNode(){
+    return state.stack.length ? state.stack[state.stack.length-1] : state.data;
+  }
+  function topThemeName(){
+    // primer nivel del breadcrumb = tema principal (para el color)
+    return state.stack.length ? state.stack[0].name : null;
+  }
+
+  // ---- Render principal ----
+  function render(){
+    const q = qInput.value.trim().toLowerCase();
+    if(q){ renderSearch(q); return; }
+
+    const node = currentNode();
+    const parts = [];
+
+    // Breadcrumb
+    parts.push(`<nav class="crumbs">`);
+    parts.push(`<button data-nav="0">🏠 Inicio</button>`);
+    state.stack.forEach((n,i)=>{
+      parts.push(`<span class="sep">›</span>`);
+      if(i===state.stack.length-1) parts.push(`<span class="cur">${esc(n.name)}</span>`);
+      else parts.push(`<button data-nav="${i+1}">${esc(n.name)}</button>`);
+    });
+    parts.push(`</nav>`);
+
+    const folders = node.folders || [];
+    const fichas = node.fichas || [];
+
+    if(!folders.length && !fichas.length){
+      parts.push(`<div class="empty">Esta carpeta está vacía.<br><small>Añade un PDF a esta carpeta en GitHub y aparecerá aquí.</small></div>`);
+    }
+
+    // Subtemas (carpetas)
+    if(folders.length){
+      parts.push(`<div class="section-label">${state.stack.length? "Subtemas":"Temas"}<span class="count-pill">${folders.length}</span></div>`);
+      parts.push(`<div class="grid themes">`);
+      folders.forEach((f,i)=>{
+        const colorName = state.stack.length ? topThemeName() : f.name;
+        const [c1,c2] = themeColors(colorName);
+        const meta = [];
+        if(f.counts.subtemas) meta.push(`${f.counts.subtemas} subtemas`);
+        meta.push(`${f.counts.fichas} ${f.counts.fichas===1?"ficha":"fichas"}`);
+        parts.push(`
+          <button class="tile" data-folder="${i}" style="background:linear-gradient(140deg,${c1},${c2})">
+            <div class="mono">${esc(monogram(f.name))}</div>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 6 6 6-6 6"/></svg>
+            <div>
+              <div class="t-name">${esc(f.name)}</div>
+              <div class="t-meta">${meta.join(" · ")}</div>
+            </div>
+          </button>`);
+      });
+      parts.push(`</div>`);
+    }
+
+    // Fichas (PDFs)
+    if(fichas.length){
+      parts.push(`<div class="section-label">Fichas<span class="count-pill">${fichas.length}</span></div>`);
+      parts.push(`<div class="grid cards">`);
+      fichas.forEach((fi,i)=>{
+        parts.push(fichaCard(fi, i, topThemeName() || fi.title));
+      });
+      parts.push(`</div>`);
+    }
+
+    main.innerHTML = parts.join("");
+    bind();
+  }
+
+  function fichaCard(fi, idx, colorName){
+    const [c1] = themeColors(colorName);
+    return `
+      <div class="ficha" data-ficha="${idx}" style="--accent:${c1}">
+        <div class="ic" style="background:${c1}">📄</div>
+        <div style="min-width:0">
+          <div class="f-title">${esc(fi.title)}</div>
+          ${fi.subtitle?`<div class="f-sub">${esc(fi.subtitle)}</div>`:""}
+        </div>
+      </div>`;
+  }
+
+  // ---- Búsqueda global (recursiva) ----
+  function collect(node, trail, out){
+    (node.fichas||[]).forEach(fi=>{
+      out.push({fi, theme: trail[0] || fi.title, trail});
+    });
+    (node.folders||[]).forEach(f=> collect(f, trail.concat(f.name), out));
+  }
+  function renderSearch(q){
+    const all = [];
+    collect(state.data, [], all);
+    const hits = all.filter(({fi,trail})=>{
+      const hay = (fi.title+" "+fi.subtitle+" "+trail.join(" ")).toLowerCase();
+      return hay.includes(q);
+    });
+    const parts = [`<div class="section-label">Resultados<span class="count-pill">${hits.length}</span></div>`];
+    if(!hits.length){
+      parts.push(`<div class="empty">Sin resultados para “${esc(q)}”.</div>`);
+    }else{
+      parts.push(`<div class="grid cards">`);
+      hits.forEach((h,i)=>{
+        const [c1] = themeColors(h.theme);
+        parts.push(`
+          <div class="ficha" data-search="${i}" style="--accent:${c1}">
+            <div class="ic" style="background:${c1}">📄</div>
+            <div style="min-width:0">
+              <div class="f-title">${esc(h.fi.title)}</div>
+              ${h.fi.subtitle?`<div class="f-sub">${esc(h.fi.subtitle)}</div>`:""}
+              <div class="f-path">${esc(h.trail.join(" › "))}</div>
+            </div>
+          </div>`);
+      });
+      parts.push(`</div>`);
+    }
+    main.innerHTML = parts.join("");
+    state._searchHits = hits;
+    main.querySelectorAll("[data-search]").forEach(el=>{
+      el.addEventListener("click", ()=>{
+        const h = state._searchHits[+el.dataset.search];
+        openPDF(h.fi);
+      });
+    });
+  }
+
+  // ---- Eventos ----
+  function bind(){
+    main.querySelectorAll("[data-nav]").forEach(b=>{
+      b.addEventListener("click", ()=>{ state.stack = state.stack.slice(0, +b.dataset.nav); render(); });
+    });
+    main.querySelectorAll("[data-folder]").forEach(b=>{
+      b.addEventListener("click", ()=>{
+        const node = currentNode();
+        state.stack.push(node.folders[+b.dataset.folder]);
+        window.scrollTo({top:0});
+        render();
+      });
+    });
+    main.querySelectorAll("[data-ficha]").forEach(b=>{
+      b.addEventListener("click", ()=>{
+        const node = currentNode();
+        openPDF(node.fichas[+b.dataset.ficha]);
+      });
+    });
+  }
+
+  let qTimer;
+  qInput.addEventListener("input", ()=>{ clearTimeout(qTimer); qTimer=setTimeout(render,120); });
+
+  // ---- Visor PDF ----
+  const viewer = document.getElementById("viewer");
+  const vPages = document.getElementById("vPages");
+  const vTitle = document.getElementById("vTitle");
+  const vOpen = document.getElementById("vOpen");
+  let renderToken = 0;
+
+  async function openPDF(fi){
+    const url = encPath(fi.path);
+    vTitle.textContent = fi.title + (fi.subtitle?` · ${fi.subtitle}`:"");
+    vOpen.href = url;
+    vPages.innerHTML = `<div class="v-loading"><div class="spin"></div>Abriendo ficha…</div>`;
+    viewer.classList.add("open");
+    viewer.setAttribute("aria-hidden","false");
+    document.body.style.overflow = "hidden";
+    const token = ++renderToken;
+
+    if(!window.pdfjsLib){ // fallback si no carga pdf.js
+      vPages.innerHTML = `<div class="v-loading">Abre la ficha en tu visor:<br><br><a class="dl" href="${url}" target="_blank" rel="noopener" style="color:#8ab4ff">Abrir PDF ⇗</a></div>`;
+      return;
+    }
+    try{
+      const pdf = await pdfjsLib.getDocument(url).promise;
+      if(token!==renderToken) return;
+      vPages.innerHTML = "";
+      const scale = Math.min(2, (window.devicePixelRatio||1) * 1.1);
+      for(let p=1; p<=pdf.numPages; p++){
+        if(token!==renderToken) return;
+        const page = await pdf.getPage(p);
+        const vw = Math.min(vPages.clientWidth - 20, 900);
+        const base = page.getViewport({scale:1});
+        const fit = vw / base.width;
+        const viewport = page.getViewport({scale: fit * scale});
+        const canvas = document.createElement("canvas");
+        canvas.width = viewport.width; canvas.height = viewport.height;
+        canvas.style.width = (base.width*fit) + "px";
+        const ctx = canvas.getContext("2d");
+        vPages.appendChild(canvas);
+        await page.render({canvasContext:ctx, viewport}).promise;
+      }
+    }catch(err){
+      if(token!==renderToken) return;
+      vPages.innerHTML = `<div class="v-loading">No se pudo mostrar el PDF aquí.<br><br><a class="dl" href="${url}" target="_blank" rel="noopener" style="color:#8ab4ff">Abrir en pestaña nueva ⇗</a><br><small style="opacity:.7">${esc(err.message)}</small></div>`;
+    }
+  }
+  function closePDF(){
+    renderToken++;
+    viewer.classList.remove("open");
+    viewer.setAttribute("aria-hidden","true");
+    document.body.style.overflow = "";
+    vPages.innerHTML = "";
+  }
+  document.getElementById("vClose").addEventListener("click", closePDF);
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && viewer.classList.contains("open")) closePDF(); });
+
+  function esc(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+  if("serviceWorker" in navigator){
+    window.addEventListener("load", ()=> navigator.serviceWorker.register("sw.js").catch(()=>{}));
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
