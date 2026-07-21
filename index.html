@@ -76,6 +76,15 @@
     border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent);
   }
   .brand{display:flex; align-items:center; gap:13px}
+  .brand-txt{min-width:0}
+  .add-btn{margin-left:auto;flex:0 0 auto;border:none;cursor:pointer;
+    font-family:var(--display);font-weight:700;font-size:13.5px;color:#fff;
+    background:linear-gradient(140deg,#6366f1,#8b5cf6);
+    padding:11px 15px;border-radius:13px;display:flex;align-items:center;gap:7px;
+    box-shadow:0 8px 18px -6px rgba(99,102,241,.6);transition:transform .14s}
+  .add-btn:active{transform:scale(.95)}
+  .add-btn:hover{filter:brightness(1.06)}
+  @media (max-width:440px){ .add-btn span{display:none} .add-btn{padding:11px 13px} }
   .logo{
     width:46px;height:46px;border-radius:14px;flex:0 0 auto;
     background:linear-gradient(140deg,#6366f1,#a855f7 55%,#ec4899);
@@ -216,6 +225,40 @@
     font-weight:500}
   footer .dot{opacity:.4;margin:0 6px}
 
+  /* ---------- Hoja "Añadir ficha" ---------- */
+  .sheet-back{position:fixed;inset:0;z-index:70;background:rgba(12,14,22,.5);
+    backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
+  .sheet-back.open{display:flex;animation:fade .18s ease}
+  .sheet{background:var(--bg);width:100%;max-width:560px;
+    border-radius:24px 24px 0 0;padding:20px 20px calc(env(safe-area-inset-bottom) + 24px);
+    box-shadow:0 -12px 40px rgba(0,0,0,.28);animation:slideup .26s cubic-bezier(.2,.8,.2,1);
+    max-height:88vh;overflow:auto}
+  @media (min-width:560px){ .sheet{border-radius:24px;margin-bottom:24px;align-self:center} }
+  @keyframes slideup{from{transform:translateY(30px);opacity:.5}to{transform:none;opacity:1}}
+  .sheet-h{display:flex;align-items:center;margin-bottom:6px}
+  .sheet-title{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.02em;flex:1}
+  .sheet-h button{border:none;background:var(--card);color:var(--muted);width:36px;height:36px;
+    border-radius:11px;cursor:pointer;font-size:15px;border:1px solid var(--line)}
+  .sheet .step{display:flex;gap:12px;margin-top:16px}
+  .sheet .step .n{flex:0 0 auto;width:26px;height:26px;border-radius:9px;
+    background:linear-gradient(140deg,#6366f1,#8b5cf6);color:#fff;font-family:var(--display);
+    font-weight:800;font-size:13px;display:grid;place-items:center;margin-top:1px}
+  .sheet .step .tx{font-size:14px;color:var(--ink-soft);line-height:1.5}
+  .sheet code{background:var(--card);border:1px solid var(--line);border-radius:7px;
+    padding:1px 7px;font-size:13px;color:var(--ink);font-family:ui-monospace,Menlo,Consolas,monospace}
+  .up-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin-top:11px}
+  .up-btn{display:flex;align-items:center;gap:9px;text-decoration:none;cursor:pointer;
+    background:var(--card);border:1px solid var(--line);border-radius:13px;padding:11px 13px;
+    color:var(--ink);font-family:var(--body);font-weight:600;font-size:13.5px;
+    box-shadow:var(--shadow-sm);transition:transform .13s,border-color .13s}
+  .up-btn:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+  .up-btn .d{width:26px;height:26px;border-radius:8px;flex:0 0 auto;color:#fff;
+    display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:13px}
+  .up-btn.primary{border-color:color-mix(in srgb,var(--accent) 50%,var(--line));
+    background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+  .sheet .note{font-size:12.5px;color:var(--muted);margin-top:16px;line-height:1.55}
+  .sheet .note b{color:var(--ink-soft)}
+
   /* ---------- Visor PDF ---------- */
   .viewer{position:fixed;inset:0;z-index:80;background:#1a1d27;
     display:none;flex-direction:column}
@@ -257,10 +300,14 @@
   <div class="wrap">
     <div class="brand">
       <div class="logo">📚</div>
-      <div>
+      <div class="brand-txt">
         <h1>Mis Fichas de Estudio</h1>
         <p id="brandSub">Cargando tu biblioteca…</p>
       </div>
+      <button class="add-btn" id="addBtn" title="Añadir ficha">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        <span>Añadir</span>
+      </button>
     </div>
     <div class="search">
       <svg class="si" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
@@ -280,6 +327,17 @@
 <footer>
   <span id="foot"></span>
 </footer>
+
+<!-- Hoja: Añadir ficha -->
+<div class="sheet-back" id="addBack" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Añadir una ficha">
+    <div class="sheet-h">
+      <div class="sheet-title">Añadir una ficha</div>
+      <button id="addClose" aria-label="Cerrar">✕</button>
+    </div>
+    <div id="addBody"></div>
+  </div>
+</div>
 
 <!-- Visor de PDF -->
 <div class="viewer" id="viewer" aria-hidden="true">
@@ -564,6 +622,70 @@
   document.addEventListener("keydown", e=>{ if(e.key==="Escape" && viewer.classList.contains("open")) closePDF(); });
 
   function esc(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+  // ---------- Añadir ficha (subida directa a GitHub) ----------
+  function repoInfo(){
+    const host = location.hostname;
+    if(!host.endsWith(".github.io")) return null;      // sólo en la web publicada
+    const owner = host.split(".")[0];
+    const seg = location.pathname.split("/").filter(Boolean);
+    const repo = seg.length ? seg[0] : owner + ".github.io";
+    return { owner, repo, branch:"main" };
+  }
+  function uploadURL(folderPath){
+    const r = repoInfo(); if(!r) return null;
+    const enc = folderPath.split("/").map(encodeURIComponent).join("/");
+    return `https://github.com/${r.owner}/${r.repo}/upload/${r.branch}/${enc}`;
+  }
+  const addBack = document.getElementById("addBack");
+  const addBody = document.getElementById("addBody");
+
+  function buildAdd(){
+    const r = repoInfo();
+    const themes = state.data ? (state.data.folders||[]) : [];
+    const here = state.stack.length ? state.stack[state.stack.length-1] : null;
+
+    let html = `
+      <div class="step"><div class="n">1</div><div class="tx">
+        Nombra el PDF así: <code>Título (fechas).pdf</code><br>
+        Ej.: <code>Napoleón (1769–1821).pdf</code>. Las fechas son opcionales.
+      </div></div>
+      <div class="step"><div class="n">2</div><div class="tx">
+        Elige dónde subirlo. Se abre GitHub: arrastra el PDF, escribe un mensaje corto
+        y pulsa <b>Commit changes</b>. En ~1 minuto aparece en la app.
+      </div></div>`;
+
+    if(r){
+      const btn = (name, path, primary)=>{
+        const [c1,c2] = themeColors(name);
+        return `<a class="up-btn ${primary?'primary':''}" target="_blank" rel="noopener" href="${uploadURL(path)}">
+          <span class="d" style="background:linear-gradient(140deg,${c1},${c2})">${esc(monogram(name))}</span>
+          <span>${esc(name)}</span></a>`;
+      };
+      html += `<div style="margin-top:8px">`;
+      if(here){
+        html += `<div class="up-grid">${btn(topThemeName()||here.name, here.path, true)}</div>
+                 <div class="note" style="margin-top:8px">Subir a la carpeta donde estás ahora: <b>${esc(here.name)}</b>. O elige otro tema:</div>`;
+      }
+      html += `<div class="up-grid">` + themes.map(t=> btn(t.name, t.path, false)).join("") + `</div></div>`;
+      html += `<div class="note">
+        ¿Un <b>tema o subtema nuevo</b>? En la pantalla de subida de GitHub, antes del nombre del
+        archivo escribe la ruta con barras, p. ej. <code>Historia/España/Napoleón (1769–1821).pdf</code>,
+        y la carpeta se crea sola.</div>`;
+    }else{
+      html += `<div class="note">
+        Abre tu app publicada (la dirección <code>github.io</code>) para tener aquí los botones de
+        subida directa. Mientras, puedes añadir fichas con <b>GitHub Desktop</b>: copia el PDF a su
+        carpeta dentro de <code>Temas/</code> → <b>Commit</b> → <b>Push</b>.</div>`;
+    }
+    addBody.innerHTML = html;
+  }
+  function openAdd(){ buildAdd(); addBack.classList.add("open"); addBack.setAttribute("aria-hidden","false"); document.body.style.overflow="hidden"; }
+  function closeAdd(){ addBack.classList.remove("open"); addBack.setAttribute("aria-hidden","true"); document.body.style.overflow=""; }
+  document.getElementById("addBtn").addEventListener("click", openAdd);
+  document.getElementById("addClose").addEventListener("click", closeAdd);
+  addBack.addEventListener("click", e=>{ if(e.target===addBack) closeAdd(); });
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && addBack.classList.contains("open")) closeAdd(); });
 
   if("serviceWorker" in navigator){
     window.addEventListener("load", ()=> navigator.serviceWorker.register("sw.js").catch(()=>{}));
