@@ -24,14 +24,23 @@ Puedes anidar carpetas todo lo que quieras (`Temas/Historia/España/…`).
 4. En el móvil, menú del navegador → **“Añadir a pantalla de inicio”**. Ya tienes
    la app instalada como un icono más.
 
-## Cómo añadir una ficha nueva
+## Cómo añadir una ficha nueva (tú mismo, sin ayuda)
 
-1. Genera tu ficha en PDF y nómbrala así:  `Título (fechas).pdf`
-   — por ejemplo `Napoleón (1769–1821).pdf`. Lo de las fechas entre paréntesis es
-   opcional; se muestra como subtítulo.
-2. Súbela a la carpeta del tema que toque dentro de `Temas/`
-   (en la web de GitHub: entra en la carpeta → **Add file → Upload files**).
-3. Listo. GitHub reconstruye la app sola y en ~1 minuto la ficha aparece.
+La forma más cómoda: **desde la propia app**. Pulsa el botón **“＋ Añadir”** (arriba a la
+derecha). Te recuerda cómo nombrar el PDF y te da un botón por cada tema que **abre
+directamente la pantalla de subida de GitHub** en esa carpeta. Ahí arrastras el PDF,
+pulsas **Commit changes**, y en ~1 minuto la ficha aparece en la app. Funciona igual
+desde el móvil o desde el ordenador.
+
+Reglas del formato (siempre iguales):
+1. Un PDF = una ficha.
+2. Nombre del archivo: `Título (fechas).pdf` — p. ej. `Napoleón (1769–1821).pdf`.
+   Las fechas entre paréntesis son opcionales y se muestran como subtítulo.
+3. El PDF va dentro de la carpeta del tema, en `Temas/…`.
+
+Alternativas equivalentes:
+- **GitHub Desktop:** copia el PDF a su carpeta dentro de `Temas/` → **Commit** → **Push**.
+- **Web de GitHub:** entra en la carpeta del tema → **Add file → Upload files**.
 
 ## Cómo crear un tema o subtema nuevo
 
