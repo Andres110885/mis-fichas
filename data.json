@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-21T06:47:31.813Z",
+  "generatedAt": "2026-07-22T06:41:47.733Z",
   "root": "Temas",
   "folders": [
     {
@@ -14,10 +14,24 @@
           "subtitle": "1903–1950",
           "path": "Temas/Escritores/George Orwell (1903–1950).pdf",
           "size": 579769
+        },
+        {
+          "type": "ficha",
+          "title": "Hermann Hesse",
+          "subtitle": "1877–1962",
+          "path": "Temas/Escritores/Hermann Hesse (1877–1962).pdf",
+          "size": 1136741
+        },
+        {
+          "type": "ficha",
+          "title": "Julio Verne",
+          "subtitle": "1828–1905",
+          "path": "Temas/Escritores/Julio Verne (1828–1905).pdf",
+          "size": 1283266
         }
       ],
       "counts": {
-        "fichas": 1,
+        "fichas": 3,
         "subtemas": 0
       }
     },
@@ -69,7 +83,7 @@
   ],
   "fichas": [],
   "counts": {
-    "fichas": 4,
+    "fichas": 6,
     "subtemas": 3
   }
 }
