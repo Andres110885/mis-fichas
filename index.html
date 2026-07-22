@@ -278,8 +278,12 @@
   .v-pages{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;
     padding:16px 12px calc(env(safe-area-inset-bottom) + 40px);
     display:flex;flex-direction:column;align-items:center;gap:16px}
-  .v-pages canvas{max-width:100%;height:auto;border-radius:8px;
-    box-shadow:0 12px 40px rgba(0,0,0,.55);background:#fff}
+  .v-page{flex:0 0 auto;display:flex;justify-content:center;will-change:transform}
+  .v-page canvas{display:block;border-radius:8px;background:#fff;
+    box-shadow:0 12px 40px rgba(0,0,0,.55);transform-origin:center top;
+    image-rendering:auto}
+  .v-zoom{font-family:var(--body);font-size:12.5px;color:#cfd3de;min-width:44px;
+    text-align:center;font-variant-numeric:tabular-nums;flex:0 0 auto}
   .v-loading{color:#c9cdd8;font-size:14.5px;padding:48px 20px;text-align:center;
     font-family:var(--body)}
   .spin{width:30px;height:30px;border:3px solid rgba(255,255,255,.22);
@@ -344,6 +348,9 @@
   <div class="v-bar">
     <button id="vClose" title="Cerrar" aria-label="Cerrar">✕</button>
     <div class="v-title" id="vTitle"></div>
+    <button id="vZoomOut" title="Alejar" aria-label="Alejar">−</button>
+    <span class="v-zoom" id="vZoomLbl">100%</span>
+    <button id="vZoomIn" title="Acercar" aria-label="Acercar">+</button>
     <a class="dl" id="vOpen" target="_blank" rel="noopener" title="Abrir en pestaña nueva" aria-label="Abrir en pestaña nueva">⇱</a>
   </div>
   <div class="v-pages" id="vPages"></div>
@@ -566,12 +573,22 @@
   qInput.addEventListener("input", ()=>{ clearTimeout(qTimer); qTimer=setTimeout(render,110); });
   qClear.addEventListener("click", ()=>{ qInput.value=""; qInput.focus(); render(); });
 
-  // ---------- Visor PDF ----------
+  // ---------- Visor PDF (vectorial, re-render nítido al zoom) ----------
   const viewer = document.getElementById("viewer");
   const vPages = document.getElementById("vPages");
   const vTitle = document.getElementById("vTitle");
   const vOpen = document.getElementById("vOpen");
-  let renderToken = 0;
+  const vZoomLbl = document.getElementById("vZoomLbl");
+
+  const DPR = Math.min(window.devicePixelRatio || 1, 3); // iPhone = 3
+  const MIN_ZOOM = 1, MAX_ZOOM = 4;
+  const MAX_RENDER_SCALE = 5;   // tope de escala pdf.js -> protege memoria del móvil
+
+  let vDoc = null;              // documento pdf.js
+  let vInfo = [];              // por página: {page, base, fit, wrap, canvas, task, scale}
+  let vZoom = 1;
+  let vToken = 0;              // invalida cargas/renders antiguos
+  let vObserver = null;
 
   async function openPDF(fi){
     const url = encPath(fi.path);
@@ -581,7 +598,9 @@
     viewer.classList.add("open");
     viewer.setAttribute("aria-hidden","false");
     document.body.style.overflow = "hidden";
-    const token = ++renderToken;
+    vZoom = 1; updateZoomLabel();
+    const token = ++vToken;
+    teardownDoc();
 
     if(!window.pdfjsLib){
       vPages.innerHTML = `<div class="v-loading">Abre la ficha en tu visor:<br><br><a href="${url}" target="_blank" rel="noopener">Abrir PDF ⇱</a></div>`;
@@ -589,37 +608,191 @@
     }
     try{
       const pdf = await pdfjsLib.getDocument(url).promise;
-      if(token!==renderToken) return;
+      if(token!==vToken){ pdf.destroy(); return; }
+      vDoc = pdf;
       vPages.innerHTML = "";
-      const dpr = Math.min(2.2, (window.devicePixelRatio||1) * 1.15);
+      vInfo = [];
+      const vw = Math.min(vPages.clientWidth - 24, 900);
       for(let p=1; p<=pdf.numPages; p++){
-        if(token!==renderToken) return;
         const page = await pdf.getPage(p);
-        const vw = Math.min(vPages.clientWidth - 24, 900);
+        if(token!==vToken) return;
         const base = page.getViewport({scale:1});
         const fit = vw / base.width;
-        const viewport = page.getViewport({scale: fit * dpr});
+        const wrap = document.createElement("div");
+        wrap.className = "v-page";
         const canvas = document.createElement("canvas");
-        canvas.width = viewport.width; canvas.height = viewport.height;
-        canvas.style.width = (base.width*fit) + "px";
-        const ctx = canvas.getContext("2d");
-        vPages.appendChild(canvas);
-        await page.render({canvasContext:ctx, viewport}).promise;
+        wrap.appendChild(canvas);
+        vPages.appendChild(wrap);
+        const info = {page, base, fit, wrap, canvas, task:null, scale:0};
+        vInfo.push(info);
+        layoutPage(info);          // fija tamaño CSS -> el scroll ya funciona
       }
+      setupObserver(token);
+      rerenderVisible();           // primer render inmediato (sin esperar al observer)
     }catch(err){
-      if(token!==renderToken) return;
+      if(token!==vToken) return;
       vPages.innerHTML = `<div class="v-loading">No se pudo mostrar el PDF aquí.<br><br><a href="${url}" target="_blank" rel="noopener">Abrir en pestaña nueva ⇱</a><br><small style="opacity:.7">${esc(err.message)}</small></div>`;
     }
   }
+
+  // Tamaño VISUAL de la página (CSS px) según el zoom actual
+  function layoutPage(info){
+    const cssScale = info.fit * vZoom;
+    const w = Math.round(info.base.width  * cssScale);
+    const h = Math.round(info.base.height * cssScale);
+    info.wrap.style.width  = w + "px";
+    info.wrap.style.height = h + "px";
+    info.canvas.style.width  = w + "px";
+    info.canvas.style.height = h + "px";
+    info.canvas.style.transform = "";      // limpia el escalado del gesto
+  }
+
+  // Render REAL a la resolución del dispositivo (nítido), sólo si hace falta
+  function renderPage(info, token){
+    const cssScale = info.fit * vZoom;
+    const devScale = Math.min(cssScale * DPR, MAX_RENDER_SCALE); // escala pdf.js efectiva
+    if(info.scale === devScale && info.canvas.width > 1) return; // ya está a esta escala
+    if(info.task){ try{ info.task.cancel(); }catch(e){} info.task = null; }
+    const viewport = info.page.getViewport({scale: devScale});
+    const canvas = info.canvas;
+    canvas.width  = Math.floor(viewport.width);
+    canvas.height = Math.floor(viewport.height);
+    const ctx = canvas.getContext("2d", {alpha:false});
+    const task = info.page.render({canvasContext:ctx, viewport});
+    info.task = task;
+    info.scale = devScale;
+    task.promise.then(()=>{ info.task = null; }).catch(()=>{ if(info.scale===devScale) info.scale=0; });
+  }
+
+  function freePage(info){                 // libera memoria de páginas lejanas
+    if(info.task){ try{ info.task.cancel(); }catch(e){} info.task=null; }
+    info.canvas.width = 1; info.canvas.height = 1; info.scale = 0;
+  }
+
+  function setupObserver(token){
+    if(vObserver) vObserver.disconnect();
+    vObserver = new IntersectionObserver((entries)=>{
+      if(token!==vToken) return;
+      entries.forEach(e=>{
+        const info = vInfo[+e.target.dataset.i];
+        if(!info) return;
+        if(e.isIntersecting) renderPage(info, token);
+        else if(vZoom > 1.2) freePage(info);   // sólo liberamos con zoom alto
+      });
+    }, {root:vPages, rootMargin:"400px 0px"});
+    vInfo.forEach((info,i)=>{ info.wrap.dataset.i = i; vObserver.observe(info.wrap); });
+  }
+
+  function rerenderVisible(){
+    const token = vToken;
+    const cr = vPages.getBoundingClientRect();
+    vInfo.forEach(info=>{
+      const r = info.wrap.getBoundingClientRect();
+      const visible = r.bottom > cr.top - 500 && r.top < cr.bottom + 500;
+      if(visible) renderPage(info, token);
+      else if(vZoom > 1.2) freePage(info);
+    });
+  }
+
+  function setZoom(z, focus){
+    z = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, z));
+    if(Math.abs(z - vZoom) < 0.001) return;
+    // Mantén el punto focal (dedo/tap) estable respecto al scroll
+    const fx = focus ? focus.x : vPages.clientWidth/2;
+    const fy = focus ? focus.y : vPages.clientHeight/2;
+    const beforeX = (vPages.scrollLeft + fx) / (vPages.scrollWidth || 1);
+    const beforeY = (vPages.scrollTop  + fy) / (vPages.scrollHeight || 1);
+    vZoom = z; updateZoomLabel();
+    vInfo.forEach(layoutPage);
+    // reajusta scroll para no perder el punto focal
+    vPages.scrollLeft = beforeX * vPages.scrollWidth  - fx;
+    vPages.scrollTop  = beforeY * vPages.scrollHeight - fy;
+    rerenderVisible();
+  }
+  function updateZoomLabel(){ if(vZoomLbl) vZoomLbl.textContent = Math.round(vZoom*100) + "%"; }
+
+  function teardownDoc(){
+    if(vObserver){ vObserver.disconnect(); vObserver=null; }
+    vInfo.forEach(info=>{ if(info.task){ try{info.task.cancel();}catch(e){} } });
+    vInfo = [];
+    if(vDoc){ try{ vDoc.destroy(); }catch(e){} vDoc=null; }
+  }
   function closePDF(){
-    renderToken++;
+    vToken++;
+    teardownDoc();
     viewer.classList.remove("open");
     viewer.setAttribute("aria-hidden","true");
     document.body.style.overflow = "";
     vPages.innerHTML = "";
+    vZoom = 1; updateZoomLabel();
   }
+
+  // Botones de zoom
+  document.getElementById("vZoomIn").addEventListener("click", ()=> setZoom(vZoom * 1.4));
+  document.getElementById("vZoomOut").addEventListener("click", ()=> setZoom(vZoom / 1.4));
   document.getElementById("vClose").addEventListener("click", closePDF);
-  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && viewer.classList.contains("open")) closePDF(); });
+  document.addEventListener("keydown", e=>{
+    if(!viewer.classList.contains("open")) return;
+    if(e.key==="Escape") closePDF();
+    else if(e.key==="+"||e.key==="=") setZoom(vZoom*1.4);
+    else if(e.key==="-") setZoom(vZoom/1.4);
+  });
+
+  // Zoom con rueda + Ctrl (trackpad/ratón en escritorio)
+  vPages.addEventListener("wheel", e=>{
+    if(!e.ctrlKey) return;
+    e.preventDefault();
+    setZoom(vZoom * (e.deltaY < 0 ? 1.12 : 1/1.12),
+      {x:e.clientX - vPages.getBoundingClientRect().left, y:e.clientY - vPages.getBoundingClientRect().top});
+  }, {passive:false});
+
+  // Doble toque para acercar/alejar
+  let lastTap = 0;
+  vPages.addEventListener("touchend", e=>{
+    if(e.touches.length>0 || pinch.active) return;
+    const now = Date.now();
+    if(now - lastTap < 300){
+      const t = e.changedTouches[0];
+      const r = vPages.getBoundingClientRect();
+      setZoom(vZoom > 1.2 ? 1 : 2.5, {x:t.clientX-r.left, y:t.clientY-r.top});
+      lastTap = 0; e.preventDefault();
+    } else lastTap = now;
+  }, {passive:false});
+
+  // Pinch-to-zoom: escalado CSS fluido durante el gesto y re-render nítido al soltar
+  const pinch = {active:false, startDist:0, startZoom:1, liveZoom:1, target:null, cx:0, cy:0};
+  function dist(t){ const dx=t[0].clientX-t[1].clientX, dy=t[0].clientY-t[1].clientY; return Math.hypot(dx,dy); }
+  vPages.addEventListener("touchstart", e=>{
+    if(e.touches.length!==2) return;
+    e.preventDefault();
+    const r = vPages.getBoundingClientRect();
+    pinch.active = true;
+    pinch.startDist = dist(e.touches);
+    pinch.startZoom = vZoom;
+    pinch.liveZoom = vZoom;
+    pinch.cx = (e.touches[0].clientX+e.touches[1].clientX)/2 - r.left;
+    pinch.cy = (e.touches[0].clientY+e.touches[1].clientY)/2 - r.top;
+    pinch.target = vInfo.find(info=>{                 // página bajo el centro del gesto
+      const rr = info.wrap.getBoundingClientRect();
+      return (pinch.cy+r.top) >= rr.top && (pinch.cy+r.top) <= rr.bottom;
+    }) || vInfo[0];
+  }, {passive:false});
+  vPages.addEventListener("touchmove", e=>{
+    if(!pinch.active || e.touches.length!==2) return;
+    e.preventDefault();
+    const g = dist(e.touches) / (pinch.startDist||1);
+    pinch.liveZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, pinch.startZoom*g));
+    if(pinch.target){                                  // escalado CSS fluido (aún borroso)
+      pinch.target.canvas.style.transformOrigin = "center top";
+      pinch.target.canvas.style.transform = `scale(${pinch.liveZoom/pinch.startZoom})`;
+    }
+  }, {passive:false});
+  vPages.addEventListener("touchend", e=>{
+    if(!pinch.active || e.touches.length>=1) return;   // espera a soltar los dos dedos
+    pinch.active = false;
+    if(pinch.target) pinch.target.canvas.style.transform = "";
+    setZoom(pinch.liveZoom, {x:pinch.cx, y:pinch.cy}); // re-render NÍTIDO a la escala final
+  }, {passive:false});
 
   function esc(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 
