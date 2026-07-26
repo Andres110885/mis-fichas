@@ -275,10 +275,11 @@
     display:grid;place-items:center;flex:0 0 auto;text-decoration:none;
     transition:background .15s}
   .v-bar button:hover, .v-bar a.dl:hover{background:rgba(255,255,255,.24)}
+  /* Bloque (no flex) para que al ampliar se pueda desplazar a TODOS los lados */
   .v-pages{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;
     padding:16px 12px calc(env(safe-area-inset-bottom) + 40px);
-    display:flex;flex-direction:column;align-items:center;gap:16px}
-  .v-page{flex:0 0 auto;display:flex;justify-content:center;will-change:transform}
+    display:block;text-align:center}
+  .v-page{display:block;margin:0 auto 16px;will-change:transform}
   .v-page canvas{display:block;border-radius:8px;background:#fff;
     box-shadow:0 12px 40px rgba(0,0,0,.55);transform-origin:center top;
     image-rendering:auto}
