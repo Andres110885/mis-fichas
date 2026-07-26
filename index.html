@@ -593,6 +593,23 @@
   let vToken = 0;              // invalida cargas/renders antiguos
   let vObserver = null;
   let vCurrent = null;         // ficha abierta ahora mismo
+  let pinching = false, lastPinchEnd = 0;
+
+  // Mientras el visor está abierto, bloquea el zoom del NAVEGADOR para que
+  // el gesto lo controle el visor (y re-renderice nítido, no un bitmap estirado).
+  const META_VP = document.querySelector('meta[name="viewport"]');
+  const VP_FREE = "width=device-width, initial-scale=1, viewport-fit=cover";
+  const VP_LOCK = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover";
+  function lockViewport(on){ if(META_VP) META_VP.setAttribute("content", on ? VP_LOCK : VP_FREE); }
+  function visiblePage(){       // página más centrada en pantalla (para el gesto)
+    const cr = vPages.getBoundingClientRect(), mid = cr.top + cr.height/2;
+    let best=null, bestD=Infinity;
+    vInfo.forEach(info=>{
+      const r = info.wrap.getBoundingClientRect(), c=(r.top+r.bottom)/2, d=Math.abs(c-mid);
+      if(r.bottom>cr.top && r.top<cr.bottom && d<bestD){ bestD=d; best=info; }
+    });
+    return best || vInfo[0];
+  }
 
   async function openPDF(fi){
     const url = encPath(fi.path);
@@ -603,6 +620,7 @@
     viewer.classList.add("open");
     viewer.setAttribute("aria-hidden","false");
     document.body.style.overflow = "hidden";
+    lockViewport(true);
     vZoom = 1; updateZoomLabel();
     const token = ++vToken;
     teardownDoc();
@@ -728,6 +746,7 @@
     viewer.classList.remove("open");
     viewer.setAttribute("aria-hidden","true");
     document.body.style.overflow = "";
+    lockViewport(false);
     vPages.innerHTML = "";
     vZoom = 1; updateZoomLabel();
   }
@@ -754,7 +773,7 @@
   // Doble toque para acercar/alejar
   let lastTap = 0;
   vPages.addEventListener("touchend", e=>{
-    if(e.touches.length>0 || pinch.active) return;
+    if(e.touches.length>0 || pinching || (Date.now()-lastPinchEnd < 400)) return;
     const now = Date.now();
     if(now - lastTap < 300){
       const t = e.changedTouches[0];
@@ -764,40 +783,56 @@
     } else lastTap = now;
   }, {passive:false});
 
-  // Pinch-to-zoom: escalado CSS fluido durante el gesto y re-render nítido al soltar
-  const pinch = {active:false, startDist:0, startZoom:1, liveZoom:1, target:null, cx:0, cy:0};
-  function dist(t){ const dx=t[0].clientX-t[1].clientX, dy=t[0].clientY-t[1].clientY; return Math.hypot(dx,dy); }
-  vPages.addEventListener("touchstart", e=>{
-    if(e.touches.length!==2) return;
-    e.preventDefault();
-    const r = vPages.getBoundingClientRect();
-    pinch.active = true;
-    pinch.startDist = dist(e.touches);
-    pinch.startZoom = vZoom;
-    pinch.liveZoom = vZoom;
-    pinch.cx = (e.touches[0].clientX+e.touches[1].clientX)/2 - r.left;
-    pinch.cy = (e.touches[0].clientY+e.touches[1].clientY)/2 - r.top;
-    pinch.target = vInfo.find(info=>{                 // página bajo el centro del gesto
-      const rr = info.wrap.getBoundingClientRect();
-      return (pinch.cy+r.top) >= rr.top && (pinch.cy+r.top) <= rr.bottom;
-    }) || vInfo[0];
-  }, {passive:false});
-  vPages.addEventListener("touchmove", e=>{
-    if(!pinch.active || e.touches.length!==2) return;
-    e.preventDefault();
-    const g = dist(e.touches) / (pinch.startDist||1);
-    pinch.liveZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, pinch.startZoom*g));
-    if(pinch.target){                                  // escalado CSS fluido (aún borroso)
-      pinch.target.canvas.style.transformOrigin = "center top";
-      pinch.target.canvas.style.transform = `scale(${pinch.liveZoom/pinch.startZoom})`;
-    }
-  }, {passive:false});
-  vPages.addEventListener("touchend", e=>{
-    if(!pinch.active || e.touches.length>=1) return;   // espera a soltar los dos dedos
-    pinch.active = false;
-    if(pinch.target) pinch.target.canvas.style.transform = "";
-    setZoom(pinch.liveZoom, {x:pinch.cx, y:pinch.cy}); // re-render NÍTIDO a la escala final
-  }, {passive:false});
+  // ---- Pinch-to-zoom: CSS fluido durante el gesto, re-render NÍTIDO al soltar ----
+  if("ongesturestart" in window){
+    // iPhone/iPad (Safari): eventos de gesto nativos, lo más fiable
+    let gStart = 1, gTarget = null;
+    viewer.addEventListener("gesturestart", e=>{
+      if(!viewer.classList.contains("open")) return;
+      e.preventDefault(); pinching = true; gStart = vZoom; gTarget = visiblePage();
+    }, {passive:false});
+    viewer.addEventListener("gesturechange", e=>{
+      if(!pinching) return; e.preventDefault();
+      const live = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, gStart * e.scale));
+      if(gTarget){ gTarget.canvas.style.transformOrigin = "center top";
+        gTarget.canvas.style.transform = `scale(${live/vZoom})`; }
+    }, {passive:false});
+    viewer.addEventListener("gestureend", e=>{
+      if(!pinching) return; e.preventDefault();
+      pinching = false; lastPinchEnd = Date.now();
+      const live = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, gStart * e.scale));
+      if(gTarget) gTarget.canvas.style.transform = "";
+      setZoom(live);
+    }, {passive:false});
+  } else {
+    // Android y demás: pinch por distancia entre los dos dedos
+    const pinch = {startDist:0, startZoom:1, liveZoom:1, target:null, cx:0, cy:0};
+    const dist = t=>{ const dx=t[0].clientX-t[1].clientX, dy=t[0].clientY-t[1].clientY; return Math.hypot(dx,dy); };
+    vPages.addEventListener("touchstart", e=>{
+      if(e.touches.length!==2) return;
+      e.preventDefault();
+      const r = vPages.getBoundingClientRect();
+      pinching = true;
+      pinch.startDist = dist(e.touches); pinch.startZoom = vZoom; pinch.liveZoom = vZoom;
+      pinch.cx = (e.touches[0].clientX+e.touches[1].clientX)/2 - r.left;
+      pinch.cy = (e.touches[0].clientY+e.touches[1].clientY)/2 - r.top;
+      pinch.target = visiblePage();
+    }, {passive:false});
+    vPages.addEventListener("touchmove", e=>{
+      if(!pinching || e.touches.length!==2) return;
+      e.preventDefault();
+      const g = dist(e.touches) / (pinch.startDist||1);
+      pinch.liveZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, pinch.startZoom*g));
+      if(pinch.target){ pinch.target.canvas.style.transformOrigin = "center top";
+        pinch.target.canvas.style.transform = `scale(${pinch.liveZoom/pinch.startZoom})`; }
+    }, {passive:false});
+    vPages.addEventListener("touchend", e=>{
+      if(!pinching || e.touches.length>=1) return;
+      pinching = false; lastPinchEnd = Date.now();
+      if(pinch.target) pinch.target.canvas.style.transform = "";
+      setZoom(pinch.liveZoom, {x:pinch.cx, y:pinch.cy});
+    }, {passive:false});
+  }
 
   function esc(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 
