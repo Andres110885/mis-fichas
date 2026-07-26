@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-22T06:41:47.733Z",
+  "generatedAt": "2026-07-26T08:29:40.646Z",
   "root": "Temas",
   "folders": [
     {
@@ -56,6 +56,32 @@
     },
     {
       "type": "folder",
+      "name": "Pádel",
+      "path": "Temas/Pádel",
+      "folders": [],
+      "fichas": [
+        {
+          "type": "ficha",
+          "title": "La Bandeja",
+          "subtitle": "",
+          "path": "Temas/Pádel/La Bandeja.pdf",
+          "size": 232786
+        },
+        {
+          "type": "ficha",
+          "title": "Posición de Red",
+          "subtitle": "",
+          "path": "Temas/Pádel/Posición de Red.pdf",
+          "size": 206188
+        }
+      ],
+      "counts": {
+        "fichas": 2,
+        "subtemas": 0
+      }
+    },
+    {
+      "type": "folder",
       "name": "Personajes",
       "path": "Temas/Personajes",
       "folders": [],
@@ -83,7 +109,7 @@
   ],
   "fichas": [],
   "counts": {
-    "fichas": 6,
-    "subtemas": 3
+    "fichas": 8,
+    "subtemas": 4
   }
 }
