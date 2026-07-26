@@ -1,7 +1,26 @@
 {
-  "generatedAt": "2026-07-26T08:29:40.646Z",
+  "generatedAt": "2026-07-26T08:54:55.391Z",
   "root": "Temas",
   "folders": [
+    {
+      "type": "folder",
+      "name": "Ciencia",
+      "path": "Temas/Ciencia",
+      "folders": [],
+      "fichas": [
+        {
+          "type": "ficha",
+          "title": "GPS y relatividad",
+          "subtitle": "",
+          "path": "Temas/Ciencia/GPS y relatividad.pdf",
+          "size": 99642
+        }
+      ],
+      "counts": {
+        "fichas": 1,
+        "subtemas": 0
+      }
+    },
     {
       "type": "folder",
       "name": "Escritores",
@@ -109,7 +128,7 @@
   ],
   "fichas": [],
   "counts": {
-    "fichas": 8,
-    "subtemas": 4
+    "fichas": 9,
+    "subtemas": 5
   }
 }
