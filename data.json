@@ -1,7 +1,26 @@
 {
-  "generatedAt": "2026-07-26T08:54:55.391Z",
+  "generatedAt": "2026-07-28T05:01:19.978Z",
   "root": "Temas",
   "folders": [
+    {
+      "type": "folder",
+      "name": "Álgebra",
+      "path": "Temas/Álgebra",
+      "folders": [],
+      "fichas": [
+        {
+          "type": "ficha",
+          "title": "Formulario Álgebra básica",
+          "subtitle": "",
+          "path": "Temas/Álgebra/Formulario Álgebra básica.pdf",
+          "size": 140103
+        }
+      ],
+      "counts": {
+        "fichas": 1,
+        "subtemas": 0
+      }
+    },
     {
       "type": "folder",
       "name": "Ciencia",
@@ -66,10 +85,17 @@
           "subtitle": "1923–1939",
           "path": "Temas/Historia/Guerra Civil Española (1923–1939).pdf",
           "size": 126740
+        },
+        {
+          "type": "ficha",
+          "title": "La guerra de Troya",
+          "subtitle": "",
+          "path": "Temas/Historia/La guerra de Troya.pdf",
+          "size": 96929
         }
       ],
       "counts": {
-        "fichas": 1,
+        "fichas": 2,
         "subtemas": 0
       }
     },
@@ -107,6 +133,13 @@
       "fichas": [
         {
           "type": "ficha",
+          "title": "Albert Einstein",
+          "subtitle": "1879–1955",
+          "path": "Temas/Personajes/Albert Einstein (1879–1955).pdf",
+          "size": 932075
+        },
+        {
+          "type": "ficha",
           "title": "Henry Ford",
           "subtitle": "1863–1947",
           "path": "Temas/Personajes/Henry Ford (1863–1947).pdf",
@@ -121,14 +154,14 @@
         }
       ],
       "counts": {
-        "fichas": 2,
+        "fichas": 3,
         "subtemas": 0
       }
     }
   ],
   "fichas": [],
   "counts": {
-    "fichas": 9,
-    "subtemas": 5
+    "fichas": 12,
+    "subtemas": 6
   }
 }
