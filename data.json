@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-28T05:01:19.978Z",
+  "generatedAt": "2026-07-29T06:17:05.969Z",
   "root": "Temas",
   "folders": [
     {
@@ -10,14 +10,21 @@
       "fichas": [
         {
           "type": "ficha",
-          "title": "Formulario Álgebra básica",
+          "title": "Ficha 0 - Plan de estudio de matemáticas",
           "subtitle": "",
-          "path": "Temas/Álgebra/Formulario Álgebra básica.pdf",
+          "path": "Temas/Álgebra/Ficha 0 - Plan de estudio de matemáticas.pdf",
+          "size": 129028
+        },
+        {
+          "type": "ficha",
+          "title": "Ficha 1 - Formulario Álgebra básica",
+          "subtitle": "",
+          "path": "Temas/Álgebra/Ficha 1 - Formulario Álgebra básica.pdf",
           "size": 140103
         }
       ],
       "counts": {
-        "fichas": 1,
+        "fichas": 2,
         "subtemas": 0
       }
     },
@@ -110,14 +117,14 @@
           "title": "La Bandeja",
           "subtitle": "",
           "path": "Temas/Pádel/La Bandeja.pdf",
-          "size": 232786
+          "size": 233102
         },
         {
           "type": "ficha",
           "title": "Posición de Red",
           "subtitle": "",
           "path": "Temas/Pádel/Posición de Red.pdf",
-          "size": 206188
+          "size": 254845
         }
       ],
       "counts": {
@@ -140,6 +147,13 @@
         },
         {
           "type": "ficha",
+          "title": "Galileo Galilei",
+          "subtitle": "1564–1642",
+          "path": "Temas/Personajes/Galileo Galilei (1564–1642).pdf",
+          "size": 697201
+        },
+        {
+          "type": "ficha",
           "title": "Henry Ford",
           "subtitle": "1863–1947",
           "path": "Temas/Personajes/Henry Ford (1863–1947).pdf",
@@ -154,14 +168,14 @@
         }
       ],
       "counts": {
-        "fichas": 3,
+        "fichas": 4,
         "subtemas": 0
       }
     }
   ],
   "fichas": [],
   "counts": {
-    "fichas": 12,
+    "fichas": 14,
     "subtemas": 6
   }
 }
