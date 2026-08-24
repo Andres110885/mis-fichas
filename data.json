@@ -1,33 +1,7 @@
 {
-  "generatedAt": "2026-07-29T06:17:05.969Z",
+  "generatedAt": "2026-08-24T13:31:38.052Z",
   "root": "Temas",
   "folders": [
-    {
-      "type": "folder",
-      "name": "Álgebra",
-      "path": "Temas/Álgebra",
-      "folders": [],
-      "fichas": [
-        {
-          "type": "ficha",
-          "title": "Ficha 0 - Plan de estudio de matemáticas",
-          "subtitle": "",
-          "path": "Temas/Álgebra/Ficha 0 - Plan de estudio de matemáticas.pdf",
-          "size": 129028
-        },
-        {
-          "type": "ficha",
-          "title": "Ficha 1 - Formulario Álgebra básica",
-          "subtitle": "",
-          "path": "Temas/Álgebra/Ficha 1 - Formulario Álgebra básica.pdf",
-          "size": 140103
-        }
-      ],
-      "counts": {
-        "fichas": 2,
-        "subtemas": 0
-      }
-    },
     {
       "type": "folder",
       "name": "Ciencia",
@@ -36,14 +10,28 @@
       "fichas": [
         {
           "type": "ficha",
+          "title": "El número áureo",
+          "subtitle": "",
+          "path": "Temas/Ciencia/El número áureo.pdf",
+          "size": 157712
+        },
+        {
+          "type": "ficha",
           "title": "GPS y relatividad",
           "subtitle": "",
           "path": "Temas/Ciencia/GPS y relatividad.pdf",
           "size": 99642
+        },
+        {
+          "type": "ficha",
+          "title": "La espiral de Fibonacci",
+          "subtitle": "",
+          "path": "Temas/Ciencia/La espiral de Fibonacci.pdf",
+          "size": 309650
         }
       ],
       "counts": {
-        "fichas": 1,
+        "fichas": 3,
         "subtemas": 0
       }
     },
@@ -99,10 +87,31 @@
           "subtitle": "",
           "path": "Temas/Historia/La guerra de Troya.pdf",
           "size": 96929
+        },
+        {
+          "type": "ficha",
+          "title": "La Inquisición",
+          "subtitle": "",
+          "path": "Temas/Historia/La Inquisición.pdf",
+          "size": 142303
+        },
+        {
+          "type": "ficha",
+          "title": "Las Cruzadas",
+          "subtitle": "",
+          "path": "Temas/Historia/Las Cruzadas.pdf",
+          "size": 156136
+        },
+        {
+          "type": "ficha",
+          "title": "Los Templarios",
+          "subtitle": "",
+          "path": "Temas/Historia/Los Templarios.pdf",
+          "size": 136457
         }
       ],
       "counts": {
-        "fichas": 2,
+        "fichas": 5,
         "subtemas": 0
       }
     },
@@ -117,14 +126,14 @@
           "title": "La Bandeja",
           "subtitle": "",
           "path": "Temas/Pádel/La Bandeja.pdf",
-          "size": 233102
+          "size": 332900
         },
         {
           "type": "ficha",
           "title": "Posición de Red",
           "subtitle": "",
           "path": "Temas/Pádel/Posición de Red.pdf",
-          "size": 254845
+          "size": 255144
         }
       ],
       "counts": {
@@ -147,6 +156,20 @@
         },
         {
           "type": "ficha",
+          "title": "Bruce Lee",
+          "subtitle": "1940–1973",
+          "path": "Temas/Personajes/Bruce Lee (1940–1973).pdf",
+          "size": 745554
+        },
+        {
+          "type": "ficha",
+          "title": "Ficha 07 - Nikola Tesla",
+          "subtitle": "1856-1943",
+          "path": "Temas/Personajes/Ficha 07 - Nikola Tesla (1856-1943).pdf",
+          "size": 703268
+        },
+        {
+          "type": "ficha",
           "title": "Galileo Galilei",
           "subtitle": "1564–1642",
           "path": "Temas/Personajes/Galileo Galilei (1564–1642).pdf",
@@ -165,17 +188,70 @@
           "subtitle": "1867–1934",
           "path": "Temas/Personajes/Marie Curie (1867–1934).pdf",
           "size": 906445
+        },
+        {
+          "type": "ficha",
+          "title": "Robert Oppenheimer",
+          "subtitle": "1904–1967",
+          "path": "Temas/Personajes/Robert Oppenheimer (1904–1967).pdf",
+          "size": 1162513
         }
       ],
       "counts": {
-        "fichas": 4,
+        "fichas": 7,
         "subtemas": 0
+      }
+    },
+    {
+      "type": "folder",
+      "name": "Plan de estudio",
+      "path": "Temas/Plan de estudio",
+      "folders": [
+        {
+          "type": "folder",
+          "name": "Álgebra",
+          "path": "Temas/Plan de estudio/Álgebra",
+          "folders": [],
+          "fichas": [
+            {
+              "type": "ficha",
+              "title": "Ficha 0 - Plan de estudio de matemáticas",
+              "subtitle": "",
+              "path": "Temas/Plan de estudio/Álgebra/Ficha 0 - Plan de estudio de matemáticas.pdf",
+              "size": 129028
+            },
+            {
+              "type": "ficha",
+              "title": "Ficha 1 - Formulario Álgebra básica",
+              "subtitle": "",
+              "path": "Temas/Plan de estudio/Álgebra/Ficha 1 - Formulario Álgebra básica.pdf",
+              "size": 140103
+            }
+          ],
+          "counts": {
+            "fichas": 2,
+            "subtemas": 0
+          }
+        }
+      ],
+      "fichas": [
+        {
+          "type": "ficha",
+          "title": "Hoja de ruta",
+          "subtitle": "",
+          "path": "Temas/Plan de estudio/Hoja de ruta.pdf",
+          "size": 233965
+        }
+      ],
+      "counts": {
+        "fichas": 3,
+        "subtemas": 1
       }
     }
   ],
   "fichas": [],
   "counts": {
-    "fichas": 14,
+    "fichas": 23,
     "subtemas": 6
   }
 }
