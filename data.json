@@ -1,7 +1,47 @@
 {
-  "generatedAt": "2026-08-24T13:31:38.052Z",
+  "generatedAt": "2026-09-18T10:22:45.280Z",
   "root": "Temas",
   "folders": [
+    {
+      "type": "folder",
+      "name": "Carrera espacial",
+      "path": "Temas/Carrera espacial",
+      "folders": [],
+      "fichas": [
+        {
+          "type": "ficha",
+          "title": "01 · Los precursores",
+          "subtitle": "1900–1945",
+          "path": "Temas/Carrera espacial/01 · Los precursores (1900–1945).pdf",
+          "size": 738998
+        },
+        {
+          "type": "ficha",
+          "title": "02 · Operación Paperclip",
+          "subtitle": "1945–1955",
+          "path": "Temas/Carrera espacial/02 · Operación Paperclip (1945–1955).pdf",
+          "size": 2063150
+        },
+        {
+          "type": "ficha",
+          "title": "03 · Sputnik y el shock",
+          "subtitle": "1957–1958",
+          "path": "Temas/Carrera espacial/03 · Sputnik y el shock (1957–1958).pdf",
+          "size": 1982358
+        },
+        {
+          "type": "ficha",
+          "title": "04 · El primer hombre",
+          "subtitle": "1959–1963",
+          "path": "Temas/Carrera espacial/04 · El primer hombre (1959–1963).pdf",
+          "size": 1346752
+        }
+      ],
+      "counts": {
+        "fichas": 4,
+        "subtemas": 0
+      }
+    },
     {
       "type": "folder",
       "name": "Ciencia",
@@ -43,6 +83,13 @@
       "fichas": [
         {
           "type": "ficha",
+          "title": "Aldous Huxley",
+          "subtitle": "1894–1963",
+          "path": "Temas/Escritores/Aldous Huxley (1894–1963).pdf",
+          "size": 1267085
+        },
+        {
+          "type": "ficha",
           "title": "George Orwell",
           "subtitle": "1903–1950",
           "path": "Temas/Escritores/George Orwell (1903–1950).pdf",
@@ -61,10 +108,17 @@
           "subtitle": "1828–1905",
           "path": "Temas/Escritores/Julio Verne (1828–1905).pdf",
           "size": 1283266
+        },
+        {
+          "type": "ficha",
+          "title": "León Tolstói",
+          "subtitle": "1828–1910",
+          "path": "Temas/Escritores/León Tolstói (1828–1910).pdf",
+          "size": 1281033
         }
       ],
       "counts": {
-        "fichas": 3,
+        "fichas": 5,
         "subtemas": 0
       }
     },
@@ -226,10 +280,17 @@
               "subtitle": "",
               "path": "Temas/Plan de estudio/Álgebra/Ficha 1 - Formulario Álgebra básica.pdf",
               "size": 140103
+            },
+            {
+              "type": "ficha",
+              "title": "Ficha 2 - Apuntes Álgebra 2",
+              "subtitle": "",
+              "path": "Temas/Plan de estudio/Álgebra/Ficha 2 - Apuntes Álgebra 2.pdf",
+              "size": 446466
             }
           ],
           "counts": {
-            "fichas": 2,
+            "fichas": 3,
             "subtemas": 0
           }
         }
@@ -244,14 +305,14 @@
         }
       ],
       "counts": {
-        "fichas": 3,
+        "fichas": 4,
         "subtemas": 1
       }
     }
   ],
   "fichas": [],
   "counts": {
-    "fichas": 23,
-    "subtemas": 6
+    "fichas": 30,
+    "subtemas": 7
   }
 }
