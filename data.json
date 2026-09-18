@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18T10:22:45.280Z",
+  "generatedAt": "2026-09-18T10:52:35.360Z",
   "root": "Temas",
   "folders": [
     {
@@ -35,10 +35,17 @@
           "subtitle": "1959–1963",
           "path": "Temas/Carrera espacial/04 · El primer hombre (1959–1963).pdf",
           "size": 1346752
+        },
+        {
+          "type": "ficha",
+          "title": "05 · Salir de la cápsula",
+          "subtitle": "1965–1966",
+          "path": "Temas/Carrera espacial/05 · Salir de la cápsula (1965–1966).pdf",
+          "size": 1345072
         }
       ],
       "counts": {
-        "fichas": 4,
+        "fichas": 5,
         "subtemas": 0
       }
     },
@@ -312,7 +319,7 @@
   ],
   "fichas": [],
   "counts": {
-    "fichas": 30,
+    "fichas": 31,
     "subtemas": 7
   }
 }
