@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18T10:52:35.360Z",
+  "generatedAt": "2026-09-25T10:58:23.896Z",
   "root": "Temas",
   "folders": [
     {
@@ -8,6 +8,13 @@
       "path": "Temas/Carrera espacial",
       "folders": [],
       "fichas": [
+        {
+          "type": "ficha",
+          "title": "00 · Índice de la serie",
+          "subtitle": "",
+          "path": "Temas/Carrera espacial/00 · Índice de la serie.pdf",
+          "size": 110671
+        },
         {
           "type": "ficha",
           "title": "01 · Los precursores",
@@ -45,7 +52,7 @@
         }
       ],
       "counts": {
-        "fichas": 5,
+        "fichas": 6,
         "subtemas": 0
       }
     },
@@ -319,7 +326,7 @@
   ],
   "fichas": [],
   "counts": {
-    "fichas": 31,
+    "fichas": 32,
     "subtemas": 7
   }
 }
