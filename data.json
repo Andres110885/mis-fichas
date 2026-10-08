@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T10:58:23.896Z",
+  "generatedAt": "2026-10-08T12:54:35.454Z",
   "root": "Temas",
   "folders": [
     {
@@ -49,10 +49,17 @@
           "subtitle": "1965–1966",
           "path": "Temas/Carrera espacial/05 · Salir de la cápsula (1965–1966).pdf",
           "size": 1345072
+        },
+        {
+          "type": "ficha",
+          "title": "06 · 1967, el año negro",
+          "subtitle": "1967",
+          "path": "Temas/Carrera espacial/06 · 1967, el año negro (1967).pdf",
+          "size": 833614
         }
       ],
       "counts": {
-        "fichas": 6,
+        "fichas": 7,
         "subtemas": 0
       }
     },
@@ -326,7 +333,7 @@
   ],
   "fichas": [],
   "counts": {
-    "fichas": 32,
+    "fichas": 33,
     "subtemas": 7
   }
 }
