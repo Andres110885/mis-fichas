@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T12:54:35.454Z",
+  "generatedAt": "2026-10-09T11:16:15.666Z",
   "root": "Temas",
   "folders": [
     {
@@ -56,10 +56,17 @@
           "subtitle": "1967",
           "path": "Temas/Carrera espacial/06 · 1967, el año negro (1967).pdf",
           "size": 833614
+        },
+        {
+          "type": "ficha",
+          "title": "07 · Apolo 8, la Tierra vista de lejos",
+          "subtitle": "1968",
+          "path": "Temas/Carrera espacial/07 · Apolo 8, la Tierra vista de lejos (1968).pdf",
+          "size": 295056
         }
       ],
       "counts": {
-        "fichas": 7,
+        "fichas": 8,
         "subtemas": 0
       }
     },
@@ -333,7 +340,7 @@
   ],
   "fichas": [],
   "counts": {
-    "fichas": 33,
+    "fichas": 34,
     "subtemas": 7
   }
 }
