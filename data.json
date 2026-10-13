@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T11:16:15.666Z",
+  "generatedAt": "2026-10-13T08:36:16.643Z",
   "root": "Temas",
   "folders": [
     {
@@ -321,6 +321,25 @@
             "fichas": 3,
             "subtemas": 0
           }
+        },
+        {
+          "type": "folder",
+          "name": "Física",
+          "path": "Temas/Plan de estudio/Física",
+          "folders": [],
+          "fichas": [
+            {
+              "type": "ficha",
+              "title": "Ficha 1 - Cuántica, por dónde empezar",
+              "subtitle": "",
+              "path": "Temas/Plan de estudio/Física/Ficha 1 - Cuántica, por dónde empezar.pdf",
+              "size": 81936
+            }
+          ],
+          "counts": {
+            "fichas": 1,
+            "subtemas": 0
+          }
         }
       ],
       "fichas": [
@@ -333,14 +352,14 @@
         }
       ],
       "counts": {
-        "fichas": 4,
-        "subtemas": 1
+        "fichas": 5,
+        "subtemas": 2
       }
     }
   ],
   "fichas": [],
   "counts": {
-    "fichas": 34,
+    "fichas": 35,
     "subtemas": 7
   }
 }
