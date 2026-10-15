@@ -1,319 +1,37 @@
 {
-  "generatedAt": "2026-10-13T08:36:16.643Z",
+  "generatedAt": "2026-10-15T12:24:58.357Z",
   "root": "Temas",
   "folders": [
     {
       "type": "folder",
-      "name": "Carrera espacial",
-      "path": "Temas/Carrera espacial",
-      "folders": [],
-      "fichas": [
-        {
-          "type": "ficha",
-          "title": "00 · Índice de la serie",
-          "subtitle": "",
-          "path": "Temas/Carrera espacial/00 · Índice de la serie.pdf",
-          "size": 110671
-        },
-        {
-          "type": "ficha",
-          "title": "01 · Los precursores",
-          "subtitle": "1900–1945",
-          "path": "Temas/Carrera espacial/01 · Los precursores (1900–1945).pdf",
-          "size": 738998
-        },
-        {
-          "type": "ficha",
-          "title": "02 · Operación Paperclip",
-          "subtitle": "1945–1955",
-          "path": "Temas/Carrera espacial/02 · Operación Paperclip (1945–1955).pdf",
-          "size": 2063150
-        },
-        {
-          "type": "ficha",
-          "title": "03 · Sputnik y el shock",
-          "subtitle": "1957–1958",
-          "path": "Temas/Carrera espacial/03 · Sputnik y el shock (1957–1958).pdf",
-          "size": 1982358
-        },
-        {
-          "type": "ficha",
-          "title": "04 · El primer hombre",
-          "subtitle": "1959–1963",
-          "path": "Temas/Carrera espacial/04 · El primer hombre (1959–1963).pdf",
-          "size": 1346752
-        },
-        {
-          "type": "ficha",
-          "title": "05 · Salir de la cápsula",
-          "subtitle": "1965–1966",
-          "path": "Temas/Carrera espacial/05 · Salir de la cápsula (1965–1966).pdf",
-          "size": 1345072
-        },
-        {
-          "type": "ficha",
-          "title": "06 · 1967, el año negro",
-          "subtitle": "1967",
-          "path": "Temas/Carrera espacial/06 · 1967, el año negro (1967).pdf",
-          "size": 833614
-        },
-        {
-          "type": "ficha",
-          "title": "07 · Apolo 8, la Tierra vista de lejos",
-          "subtitle": "1968",
-          "path": "Temas/Carrera espacial/07 · Apolo 8, la Tierra vista de lejos (1968).pdf",
-          "size": 295056
-        }
-      ],
-      "counts": {
-        "fichas": 8,
-        "subtemas": 0
-      }
-    },
-    {
-      "type": "folder",
-      "name": "Ciencia",
-      "path": "Temas/Ciencia",
-      "folders": [],
-      "fichas": [
-        {
-          "type": "ficha",
-          "title": "El número áureo",
-          "subtitle": "",
-          "path": "Temas/Ciencia/El número áureo.pdf",
-          "size": 157712
-        },
-        {
-          "type": "ficha",
-          "title": "GPS y relatividad",
-          "subtitle": "",
-          "path": "Temas/Ciencia/GPS y relatividad.pdf",
-          "size": 99642
-        },
-        {
-          "type": "ficha",
-          "title": "La espiral de Fibonacci",
-          "subtitle": "",
-          "path": "Temas/Ciencia/La espiral de Fibonacci.pdf",
-          "size": 309650
-        }
-      ],
-      "counts": {
-        "fichas": 3,
-        "subtemas": 0
-      }
-    },
-    {
-      "type": "folder",
-      "name": "Escritores",
-      "path": "Temas/Escritores",
-      "folders": [],
-      "fichas": [
-        {
-          "type": "ficha",
-          "title": "Aldous Huxley",
-          "subtitle": "1894–1963",
-          "path": "Temas/Escritores/Aldous Huxley (1894–1963).pdf",
-          "size": 1267085
-        },
-        {
-          "type": "ficha",
-          "title": "George Orwell",
-          "subtitle": "1903–1950",
-          "path": "Temas/Escritores/George Orwell (1903–1950).pdf",
-          "size": 579769
-        },
-        {
-          "type": "ficha",
-          "title": "Hermann Hesse",
-          "subtitle": "1877–1962",
-          "path": "Temas/Escritores/Hermann Hesse (1877–1962).pdf",
-          "size": 1136741
-        },
-        {
-          "type": "ficha",
-          "title": "Julio Verne",
-          "subtitle": "1828–1905",
-          "path": "Temas/Escritores/Julio Verne (1828–1905).pdf",
-          "size": 1283266
-        },
-        {
-          "type": "ficha",
-          "title": "León Tolstói",
-          "subtitle": "1828–1910",
-          "path": "Temas/Escritores/León Tolstói (1828–1910).pdf",
-          "size": 1281033
-        }
-      ],
-      "counts": {
-        "fichas": 5,
-        "subtemas": 0
-      }
-    },
-    {
-      "type": "folder",
-      "name": "Historia",
-      "path": "Temas/Historia",
-      "folders": [],
-      "fichas": [
-        {
-          "type": "ficha",
-          "title": "Guerra Civil Española",
-          "subtitle": "1923–1939",
-          "path": "Temas/Historia/Guerra Civil Española (1923–1939).pdf",
-          "size": 126740
-        },
-        {
-          "type": "ficha",
-          "title": "La guerra de Troya",
-          "subtitle": "",
-          "path": "Temas/Historia/La guerra de Troya.pdf",
-          "size": 96929
-        },
-        {
-          "type": "ficha",
-          "title": "La Inquisición",
-          "subtitle": "",
-          "path": "Temas/Historia/La Inquisición.pdf",
-          "size": 142303
-        },
-        {
-          "type": "ficha",
-          "title": "Las Cruzadas",
-          "subtitle": "",
-          "path": "Temas/Historia/Las Cruzadas.pdf",
-          "size": 156136
-        },
-        {
-          "type": "ficha",
-          "title": "Los Templarios",
-          "subtitle": "",
-          "path": "Temas/Historia/Los Templarios.pdf",
-          "size": 136457
-        }
-      ],
-      "counts": {
-        "fichas": 5,
-        "subtemas": 0
-      }
-    },
-    {
-      "type": "folder",
-      "name": "Pádel",
-      "path": "Temas/Pádel",
-      "folders": [],
-      "fichas": [
-        {
-          "type": "ficha",
-          "title": "La Bandeja",
-          "subtitle": "",
-          "path": "Temas/Pádel/La Bandeja.pdf",
-          "size": 332900
-        },
-        {
-          "type": "ficha",
-          "title": "Posición de Red",
-          "subtitle": "",
-          "path": "Temas/Pádel/Posición de Red.pdf",
-          "size": 255144
-        }
-      ],
-      "counts": {
-        "fichas": 2,
-        "subtemas": 0
-      }
-    },
-    {
-      "type": "folder",
-      "name": "Personajes",
-      "path": "Temas/Personajes",
-      "folders": [],
-      "fichas": [
-        {
-          "type": "ficha",
-          "title": "Albert Einstein",
-          "subtitle": "1879–1955",
-          "path": "Temas/Personajes/Albert Einstein (1879–1955).pdf",
-          "size": 932075
-        },
-        {
-          "type": "ficha",
-          "title": "Bruce Lee",
-          "subtitle": "1940–1973",
-          "path": "Temas/Personajes/Bruce Lee (1940–1973).pdf",
-          "size": 745554
-        },
-        {
-          "type": "ficha",
-          "title": "Ficha 07 - Nikola Tesla",
-          "subtitle": "1856-1943",
-          "path": "Temas/Personajes/Ficha 07 - Nikola Tesla (1856-1943).pdf",
-          "size": 703268
-        },
-        {
-          "type": "ficha",
-          "title": "Galileo Galilei",
-          "subtitle": "1564–1642",
-          "path": "Temas/Personajes/Galileo Galilei (1564–1642).pdf",
-          "size": 697201
-        },
-        {
-          "type": "ficha",
-          "title": "Henry Ford",
-          "subtitle": "1863–1947",
-          "path": "Temas/Personajes/Henry Ford (1863–1947).pdf",
-          "size": 1059921
-        },
-        {
-          "type": "ficha",
-          "title": "Marie Curie",
-          "subtitle": "1867–1934",
-          "path": "Temas/Personajes/Marie Curie (1867–1934).pdf",
-          "size": 906445
-        },
-        {
-          "type": "ficha",
-          "title": "Robert Oppenheimer",
-          "subtitle": "1904–1967",
-          "path": "Temas/Personajes/Robert Oppenheimer (1904–1967).pdf",
-          "size": 1162513
-        }
-      ],
-      "counts": {
-        "fichas": 7,
-        "subtemas": 0
-      }
-    },
-    {
-      "type": "folder",
-      "name": "Plan de estudio",
-      "path": "Temas/Plan de estudio",
+      "name": "Estudio",
+      "path": "Temas/Estudio",
       "folders": [
         {
           "type": "folder",
           "name": "Álgebra",
-          "path": "Temas/Plan de estudio/Álgebra",
+          "path": "Temas/Estudio/Álgebra",
           "folders": [],
           "fichas": [
             {
               "type": "ficha",
               "title": "Ficha 0 - Plan de estudio de matemáticas",
               "subtitle": "",
-              "path": "Temas/Plan de estudio/Álgebra/Ficha 0 - Plan de estudio de matemáticas.pdf",
+              "path": "Temas/Estudio/Álgebra/Ficha 0 - Plan de estudio de matemáticas.pdf",
               "size": 129028
             },
             {
               "type": "ficha",
               "title": "Ficha 1 - Formulario Álgebra básica",
               "subtitle": "",
-              "path": "Temas/Plan de estudio/Álgebra/Ficha 1 - Formulario Álgebra básica.pdf",
+              "path": "Temas/Estudio/Álgebra/Ficha 1 - Formulario Álgebra básica.pdf",
               "size": 140103
             },
             {
               "type": "ficha",
               "title": "Ficha 2 - Apuntes Álgebra 2",
               "subtitle": "",
-              "path": "Temas/Plan de estudio/Álgebra/Ficha 2 - Apuntes Álgebra 2.pdf",
+              "path": "Temas/Estudio/Álgebra/Ficha 2 - Apuntes Álgebra 2.pdf",
               "size": 446466
             }
           ],
@@ -324,15 +42,83 @@
         },
         {
           "type": "folder",
+          "name": "Carrera espacial",
+          "path": "Temas/Estudio/Carrera espacial",
+          "folders": [],
+          "fichas": [
+            {
+              "type": "ficha",
+              "title": "00 · Índice de la serie",
+              "subtitle": "",
+              "path": "Temas/Estudio/Carrera espacial/00 · Índice de la serie.pdf",
+              "size": 110671
+            },
+            {
+              "type": "ficha",
+              "title": "01 · Los precursores",
+              "subtitle": "1900–1945",
+              "path": "Temas/Estudio/Carrera espacial/01 · Los precursores (1900–1945).pdf",
+              "size": 738998
+            },
+            {
+              "type": "ficha",
+              "title": "02 · Operación Paperclip",
+              "subtitle": "1945–1955",
+              "path": "Temas/Estudio/Carrera espacial/02 · Operación Paperclip (1945–1955).pdf",
+              "size": 2063150
+            },
+            {
+              "type": "ficha",
+              "title": "03 · Sputnik y el shock",
+              "subtitle": "1957–1958",
+              "path": "Temas/Estudio/Carrera espacial/03 · Sputnik y el shock (1957–1958).pdf",
+              "size": 1982358
+            },
+            {
+              "type": "ficha",
+              "title": "04 · El primer hombre",
+              "subtitle": "1959–1963",
+              "path": "Temas/Estudio/Carrera espacial/04 · El primer hombre (1959–1963).pdf",
+              "size": 1346752
+            },
+            {
+              "type": "ficha",
+              "title": "05 · Salir de la cápsula",
+              "subtitle": "1965–1966",
+              "path": "Temas/Estudio/Carrera espacial/05 · Salir de la cápsula (1965–1966).pdf",
+              "size": 1345072
+            },
+            {
+              "type": "ficha",
+              "title": "06 · 1967, el año negro",
+              "subtitle": "1967",
+              "path": "Temas/Estudio/Carrera espacial/06 · 1967, el año negro (1967).pdf",
+              "size": 833614
+            },
+            {
+              "type": "ficha",
+              "title": "07 · Apolo 8, la Tierra vista de lejos",
+              "subtitle": "1968",
+              "path": "Temas/Estudio/Carrera espacial/07 · Apolo 8, la Tierra vista de lejos (1968).pdf",
+              "size": 295056
+            }
+          ],
+          "counts": {
+            "fichas": 8,
+            "subtemas": 0
+          }
+        },
+        {
+          "type": "folder",
           "name": "Física",
-          "path": "Temas/Plan de estudio/Física",
+          "path": "Temas/Estudio/Física",
           "folders": [],
           "fichas": [
             {
               "type": "ficha",
               "title": "Ficha 1 - Cuántica, por dónde empezar",
               "subtitle": "",
-              "path": "Temas/Plan de estudio/Física/Ficha 1 - Cuántica, por dónde empezar.pdf",
+              "path": "Temas/Estudio/Física/Ficha 1 - Cuántica, por dónde empezar.pdf",
               "size": 81936
             }
           ],
@@ -347,19 +133,245 @@
           "type": "ficha",
           "title": "Hoja de ruta",
           "subtitle": "",
-          "path": "Temas/Plan de estudio/Hoja de ruta.pdf",
+          "path": "Temas/Estudio/Hoja de ruta.pdf",
           "size": 233965
         }
       ],
       "counts": {
-        "fichas": 5,
-        "subtemas": 2
+        "fichas": 13,
+        "subtemas": 3
+      }
+    },
+    {
+      "type": "folder",
+      "name": "Fichas",
+      "path": "Temas/Fichas",
+      "folders": [
+        {
+          "type": "folder",
+          "name": "Ciencia",
+          "path": "Temas/Fichas/Ciencia",
+          "folders": [],
+          "fichas": [
+            {
+              "type": "ficha",
+              "title": "El número áureo",
+              "subtitle": "",
+              "path": "Temas/Fichas/Ciencia/El número áureo.pdf",
+              "size": 157712
+            },
+            {
+              "type": "ficha",
+              "title": "GPS y relatividad",
+              "subtitle": "",
+              "path": "Temas/Fichas/Ciencia/GPS y relatividad.pdf",
+              "size": 99642
+            },
+            {
+              "type": "ficha",
+              "title": "La espiral de Fibonacci",
+              "subtitle": "",
+              "path": "Temas/Fichas/Ciencia/La espiral de Fibonacci.pdf",
+              "size": 309650
+            }
+          ],
+          "counts": {
+            "fichas": 3,
+            "subtemas": 0
+          }
+        },
+        {
+          "type": "folder",
+          "name": "Escritores",
+          "path": "Temas/Fichas/Escritores",
+          "folders": [],
+          "fichas": [
+            {
+              "type": "ficha",
+              "title": "Aldous Huxley",
+              "subtitle": "1894–1963",
+              "path": "Temas/Fichas/Escritores/Aldous Huxley (1894–1963).pdf",
+              "size": 1267085
+            },
+            {
+              "type": "ficha",
+              "title": "George Orwell",
+              "subtitle": "1903–1950",
+              "path": "Temas/Fichas/Escritores/George Orwell (1903–1950).pdf",
+              "size": 579769
+            },
+            {
+              "type": "ficha",
+              "title": "Hermann Hesse",
+              "subtitle": "1877–1962",
+              "path": "Temas/Fichas/Escritores/Hermann Hesse (1877–1962).pdf",
+              "size": 1136741
+            },
+            {
+              "type": "ficha",
+              "title": "Julio Verne",
+              "subtitle": "1828–1905",
+              "path": "Temas/Fichas/Escritores/Julio Verne (1828–1905).pdf",
+              "size": 1283266
+            },
+            {
+              "type": "ficha",
+              "title": "León Tolstói",
+              "subtitle": "1828–1910",
+              "path": "Temas/Fichas/Escritores/León Tolstói (1828–1910).pdf",
+              "size": 1281033
+            }
+          ],
+          "counts": {
+            "fichas": 5,
+            "subtemas": 0
+          }
+        },
+        {
+          "type": "folder",
+          "name": "Historia",
+          "path": "Temas/Fichas/Historia",
+          "folders": [],
+          "fichas": [
+            {
+              "type": "ficha",
+              "title": "Guerra Civil Española",
+              "subtitle": "1923–1939",
+              "path": "Temas/Fichas/Historia/Guerra Civil Española (1923–1939).pdf",
+              "size": 126740
+            },
+            {
+              "type": "ficha",
+              "title": "La guerra de Troya",
+              "subtitle": "",
+              "path": "Temas/Fichas/Historia/La guerra de Troya.pdf",
+              "size": 96929
+            },
+            {
+              "type": "ficha",
+              "title": "La Inquisición",
+              "subtitle": "",
+              "path": "Temas/Fichas/Historia/La Inquisición.pdf",
+              "size": 142303
+            },
+            {
+              "type": "ficha",
+              "title": "Las Cruzadas",
+              "subtitle": "",
+              "path": "Temas/Fichas/Historia/Las Cruzadas.pdf",
+              "size": 156136
+            },
+            {
+              "type": "ficha",
+              "title": "Los Templarios",
+              "subtitle": "",
+              "path": "Temas/Fichas/Historia/Los Templarios.pdf",
+              "size": 136457
+            }
+          ],
+          "counts": {
+            "fichas": 5,
+            "subtemas": 0
+          }
+        },
+        {
+          "type": "folder",
+          "name": "Pádel",
+          "path": "Temas/Fichas/Pádel",
+          "folders": [],
+          "fichas": [
+            {
+              "type": "ficha",
+              "title": "La Bandeja",
+              "subtitle": "",
+              "path": "Temas/Fichas/Pádel/La Bandeja.pdf",
+              "size": 332900
+            },
+            {
+              "type": "ficha",
+              "title": "Posición de Red",
+              "subtitle": "",
+              "path": "Temas/Fichas/Pádel/Posición de Red.pdf",
+              "size": 255144
+            }
+          ],
+          "counts": {
+            "fichas": 2,
+            "subtemas": 0
+          }
+        },
+        {
+          "type": "folder",
+          "name": "Personajes",
+          "path": "Temas/Fichas/Personajes",
+          "folders": [],
+          "fichas": [
+            {
+              "type": "ficha",
+              "title": "Albert Einstein",
+              "subtitle": "1879–1955",
+              "path": "Temas/Fichas/Personajes/Albert Einstein (1879–1955).pdf",
+              "size": 932075
+            },
+            {
+              "type": "ficha",
+              "title": "Bruce Lee",
+              "subtitle": "1940–1973",
+              "path": "Temas/Fichas/Personajes/Bruce Lee (1940–1973).pdf",
+              "size": 745554
+            },
+            {
+              "type": "ficha",
+              "title": "Ficha 07 - Nikola Tesla",
+              "subtitle": "1856-1943",
+              "path": "Temas/Fichas/Personajes/Ficha 07 - Nikola Tesla (1856-1943).pdf",
+              "size": 703268
+            },
+            {
+              "type": "ficha",
+              "title": "Galileo Galilei",
+              "subtitle": "1564–1642",
+              "path": "Temas/Fichas/Personajes/Galileo Galilei (1564–1642).pdf",
+              "size": 697201
+            },
+            {
+              "type": "ficha",
+              "title": "Henry Ford",
+              "subtitle": "1863–1947",
+              "path": "Temas/Fichas/Personajes/Henry Ford (1863–1947).pdf",
+              "size": 1059921
+            },
+            {
+              "type": "ficha",
+              "title": "Marie Curie",
+              "subtitle": "1867–1934",
+              "path": "Temas/Fichas/Personajes/Marie Curie (1867–1934).pdf",
+              "size": 906445
+            },
+            {
+              "type": "ficha",
+              "title": "Robert Oppenheimer",
+              "subtitle": "1904–1967",
+              "path": "Temas/Fichas/Personajes/Robert Oppenheimer (1904–1967).pdf",
+              "size": 1162513
+            }
+          ],
+          "counts": {
+            "fichas": 7,
+            "subtemas": 0
+          }
+        }
+      ],
+      "fichas": [],
+      "counts": {
+        "fichas": 22,
+        "subtemas": 5
       }
     }
   ],
   "fichas": [],
   "counts": {
     "fichas": 35,
-    "subtemas": 7
+    "subtemas": 2
   }
 }
