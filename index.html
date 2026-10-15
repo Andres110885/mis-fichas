@@ -113,6 +113,11 @@
     box-shadow:0 8px 18px -6px rgba(99,102,241,.6);transition:transform .14s,filter .14s}
   .pr-copy:active{transform:scale(.985)}
   .pr-copy:hover{filter:brightness(1.05)}
+  .pr-tabs{display:flex;gap:7px}
+  .pr-tab{flex:1;cursor:pointer;font-family:var(--display);font-weight:700;font-size:12.5px;
+    padding:10px 10px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--muted);transition:.14s}
+  .pr-tab.on{background:color-mix(in srgb,var(--accent) 12%,var(--card));
+    border-color:color-mix(in srgb,var(--accent) 48%,var(--line));color:var(--accent)}
   .logo{
     width:46px;height:46px;border-radius:14px;flex:0 0 auto;
     background:linear-gradient(140deg,#6366f1,#a855f7 55%,#ec4899);
@@ -985,28 +990,59 @@
 "- Que se lea bien y sea bonito.\n\n"+
 "Llama al archivo: Mapa de estudio - {TEMA}.pdf";
 
+  const PROMPT_AFONDO =
+"Quiero un documento de estudio **a fondo** sobre **{TEMA}**, en formato revista para imprimir y guardar.\n\n"+
+"Actúa como divulgador experto y redacta un **dossier de 5 a 7 páginas A4** que explique {TEMA} de principio a fin: qué es, de dónde viene, sus ideas centrales y sus fronteras y aplicaciones. Progresión de lo básico a lo avanzado, con rigor y sin relleno. No te inventes nada; si algo es discutible, dilo.\n\n"+
+"Estructura:\n"+
+"- Portada: título \"{TEMA}\", un subtítulo con gancho, un párrafo de entrada con capitular, una barra lateral de cronología esencial, una cita real (bien atribuida) y un índice que muestre los cuatro niveles con su número de temas.\n"+
+"- CUERPO ORGANIZADO EN CUATRO NIVELES, en este orden: Principiante, Intermedio, Avanzado y Experto. Cada nivel es una sección con su cabecera clara (banda azul marino con el nombre del nivel y una frase).\n"+
+"- Dentro de cada nivel, lista sus mini-temas NUMERADOS de forma correlativa (1, 2, 3…): cada punto con un título corto en negrita y un párrafo breve (2 a 4 frases) que lo explique. Que se vean CLAROS los puntos, NO en prosa corrida.\n"+
+"- Ordena los puntos en el orden exacto en que conviene estudiarlos; cada uno se apoya en el anterior.\n"+
+"- Intercala diagramas del mecanismo donde ayuden (doble rendija, niveles atómicos, etc.) y alguna caja \"Idea clave\".\n"+
+"- Cierre con un recuadro \"cómo seguir\" que invite a pedir la ficha a fondo de cada mini-tema.\n\n"+
+"FORMATO VISUAL (respétalo): maquétalo como una revista editorial, pensada para imprimir y de bajo consumo de tinta.\n"+
+"- Papel marfil #FBF8F1; tinta casi negra; azul marino #16233F y naranja teja #C14A1B como acentos SOLO en filetes, títulos, líneas y diagramas (nunca grandes manchas de color).\n"+
+"- Tipografías: títulos en Fraunces (serif con carácter); cuerpo en Spectral (serif de lectura, justificado a DOS COLUMNAS con capitular); etiquetas y kickers en Oswald en mayúsculas.\n"+
+"- Componentes: masthead con filete superior, capitular al inicio, cajas \"Idea clave\" (panel marfil con filete naranja a la izquierda), barra lateral de datos/cronología, citas destacadas, diagramas en línea (navy y teja sobre marfil) y pie de página con numeración.\n"+
+"- A4 con buenos márgenes; que se lea cómodo y quede elegante al imprimir.\n\n"+
+"Genera el PDF final. Llama al archivo: {TEMA} - a fondo.pdf";
+
+  var PROMPTS = {
+    mapa:  { desc:'Te genera un <b>PDF</b> con todos los mini-temas que debes estudiar para dominarlo, <b>ordenados por nivel</b> (Principiante → Experto).', foot:'Ideal para empezar: la hoja de ruta del tema.', text:PROMPT_MAPA },
+    afondo:{ desc:'Te genera un <b>dossier tipo revista</b> (5–7 págs. A4) que explica el tema de principio a fin, con diagramas. Pensado para <b>imprimir y guardar</b>.', foot:'Para profundizar: el tema completo y bonito para archivar.', text:PROMPT_AFONDO }
+  };
+  var selPrompt = "mapa";
+
   function buildPrompts(){
     addBody.innerHTML =
-      '<span class="pr-chip">✦ Prompt general · Mapa de estudio</span>'+
-      '<div class="note" style="margin-top:12px">Escribe un tema amplio (p. ej. <b>física cuántica</b>, <b>astronomía</b>, <b>la Revolución Francesa</b>). Se copia un prompt listo; <b>pégalo en Claude</b> y te generará un <b>PDF</b> con todos los mini-temas que debes estudiar para dominarlo, ordenados por nivel.</div>'+
-      '<div class="pr-field"><label>Tema a estudiar</label><input id="pTema" placeholder="física cuántica" autocomplete="off" /></div>'+
+      '<div class="pr-tabs"><button class="pr-tab" data-k="mapa">Mapa de estudio</button><button class="pr-tab" data-k="afondo">Tema a fondo</button></div>'+
+      '<div class="note" id="pDesc" style="margin-top:11px"></div>'+
+      '<div class="pr-field"><label>Tema</label><input id="pTema" placeholder="física cuántica" autocomplete="off" /></div>'+
       '<button class="pr-copy" id="pCopy"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg> Copiar prompt</button>'+
-      '<div class="note" id="pMsg" style="margin-top:11px">Niveles: <b>Principiante → Intermedio → Avanzado → Experto</b>, con los mini-temas en orden de estudio.</div>';
+      '<div class="note" id="pMsg" style="margin-top:11px"></div>';
     var inp=document.getElementById("pTema");
     var btn=document.getElementById("pCopy");
     var msg=document.getElementById("pMsg");
+    var desc=document.getElementById("pDesc");
+    var tabs=addBody.querySelectorAll(".pr-tab");
     var COPYLBL=btn.innerHTML;
+    function paint(){
+      for(var i=0;i<tabs.length;i++){ tabs[i].classList.toggle("on", tabs[i].getAttribute("data-k")===selPrompt); }
+      desc.innerHTML=PROMPTS[selPrompt].desc; msg.innerHTML=PROMPTS[selPrompt].foot; btn.innerHTML=COPYLBL;
+    }
+    for(var i=0;i<tabs.length;i++){ tabs[i].addEventListener("click",function(){ selPrompt=this.getAttribute("data-k"); paint(); inp.focus(); }); }
     function legacy(t,cb){ var ta=document.createElement("textarea"); ta.value=t; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); cb(); }catch(e){ msg.textContent="No se pudo copiar automáticamente."; } document.body.removeChild(ta); }
     function doCopy(){
       var tema=(inp.value||"").trim();
       if(!tema){ inp.focus(); msg.innerHTML='<b style="color:var(--accent)">Escribe primero un tema.</b>'; return; }
-      var text=PROMPT_MAPA.split("{TEMA}").join(tema);
+      var text=PROMPTS[selPrompt].text.split("{TEMA}").join(tema);
       function ok(){ btn.innerHTML='✓ ¡Copiado! Pégalo en Claude'; msg.innerHTML='Listo. Abre Claude, <b>pega</b> (Ctrl/Cmd+V) y te generará el PDF.'; setTimeout(function(){ btn.innerHTML=COPYLBL; },2600); }
       if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok).catch(function(){ legacy(text,ok); }); }
       else legacy(text,ok);
     }
     btn.addEventListener("click",doCopy);
     inp.addEventListener("keydown",function(e){ if(e.key==="Enter"){ e.preventDefault(); doCopy(); } });
+    paint();
     setTimeout(function(){ inp.focus(); },60);
   }
   function openPrompts(){ sheetTitle.textContent="Prompts"; buildPrompts(); openSheet(); }
