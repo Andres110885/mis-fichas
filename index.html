@@ -85,6 +85,34 @@
   .add-btn:active{transform:scale(.95)}
   .add-btn:hover{filter:brightness(1.06)}
   @media (max-width:440px){ .add-btn span{display:none} .add-btn{padding:11px 13px} }
+  .brand .add-btn{margin-left:10px}
+  .prompts-btn{margin-left:auto;flex:0 0 auto;cursor:pointer;
+    font-family:var(--display);font-weight:700;font-size:13.5px;color:var(--accent);
+    background:color-mix(in srgb,var(--accent) 10%,var(--card));
+    border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));
+    padding:11px 15px;border-radius:13px;display:flex;align-items:center;gap:7px;
+    transition:transform .14s,filter .14s}
+  .prompts-btn:active{transform:scale(.95)}
+  .prompts-btn:hover{filter:brightness(1.03);border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+  @media (max-width:440px){ .prompts-btn span{display:none} .prompts-btn{padding:11px 13px} }
+  /* Prompts sheet */
+  .pr-chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;
+    font-family:var(--display);color:var(--accent);
+    background:color-mix(in srgb,var(--accent) 10%,var(--card));
+    border:1px solid color-mix(in srgb,var(--accent) 30%,var(--line));padding:6px 12px;border-radius:999px}
+  .pr-field{margin-top:15px}
+  .pr-field label{display:block;font-size:13px;font-weight:800;color:var(--ink-soft);
+    margin-bottom:7px;font-family:var(--display)}
+  .pr-field input{width:100%;padding:13px 15px;border-radius:13px;border:1px solid var(--line);
+    background:var(--card);color:var(--ink);font-family:var(--body);font-size:15.5px;outline:none;
+    transition:border-color .14s}
+  .pr-field input:focus{border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+  .pr-copy{margin-top:15px;width:100%;border:none;cursor:pointer;font-family:var(--display);
+    font-weight:800;font-size:15px;color:#fff;background:linear-gradient(140deg,#6366f1,#8b5cf6);
+    padding:14px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:9px;
+    box-shadow:0 8px 18px -6px rgba(99,102,241,.6);transition:transform .14s,filter .14s}
+  .pr-copy:active{transform:scale(.985)}
+  .pr-copy:hover{filter:brightness(1.05)}
   .logo{
     width:46px;height:46px;border-radius:14px;flex:0 0 auto;
     background:linear-gradient(140deg,#6366f1,#a855f7 55%,#ec4899);
@@ -309,6 +337,10 @@
         <h1>Mis Fichas de Estudio</h1>
         <p id="brandSub">Cargando tu biblioteca…</p>
       </div>
+      <button class="prompts-btn" id="promptsBtn" title="Prompts">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 4.5L18 8.2l-4.3 1.6L12 14l-1.7-4.2L6 8.2l4.3-1.7L12 2z"/><circle cx="18.6" cy="16.4" r="1.6"/><circle cx="5.8" cy="16.8" r="1.2"/></svg>
+        <span>Prompts</span>
+      </button>
       <button class="add-btn" id="addBtn" title="Añadir ficha">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
         <span>Añadir</span>
@@ -935,6 +967,51 @@
   }
   function openReplace(fi){ if(!fi) return; sheetTitle.textContent = "Actualizar ficha"; buildReplace(fi); openSheet(); }
 
+  // ---------- Prompts (genera un prompt listo para pegar en Claude) ----------
+  const PROMPT_MAPA =
+"Quiero dominar **{TEMA}** desde cero y necesito un MAPA DE ESTUDIO para saber exactamente qué estudiar y en qué orden.\n\n"+
+"Actúa como un tutor experto en {TEMA}. Devuélveme:\n\n"+
+"1. Un **resumen breve** (3–5 frases) de qué es {TEMA}, para qué sirve y por qué merece la pena estudiarlo.\n"+
+"2. El temario **descompuesto en mini-temas** concretos y estudiables (ni demasiado amplios ni triviales), agrupados en cuatro niveles: **Principiante, Intermedio, Avanzado y Experto**.\n"+
+"3. Dentro de cada nivel, **ordena los mini-temas en el orden exacto en que debo estudiarlos**, de modo que cada uno se apoye en lo aprendido en los anteriores (progresión real, sin saltos).\n"+
+"4. Para cada mini-tema: un **título corto** y **una sola línea** que diga qué aprenderé y por qué va en ese punto.\n"+
+"5. Si hacen falta **prerrequisitos** (matemáticas o conceptos previos), indícalos al inicio del nivel donde se necesiten.\n\n"+
+"Reglas: no te inventes nada; si algo es discutible o hay varias escuelas, dilo en una línea. Nada de relleno.\n\n"+
+"**Formato de salida: genérame un PDF muy bien presentado**, con la estética de mis fichas de estudio:\n"+
+"- Papel crema #F2EAD8, azul marino #16233F, acento naranja #D2521E, gris acero #6E7A88.\n"+
+"- Títulos en tipografía condensada tipo Oswald; texto en sans serif limpio.\n"+
+"- Cabecera con el título \"Mapa de estudio · {TEMA}\" y el resumen.\n"+
+"- Un bloque por nivel (Principiante → Intermedio → Avanzado → Experto) con los mini-temas numerados en orden.\n"+
+"- Que se lea bien y sea bonito.\n\n"+
+"Llama al archivo: Mapa de estudio - {TEMA}.pdf";
+
+  function buildPrompts(){
+    addBody.innerHTML =
+      '<span class="pr-chip">✦ Prompt general · Mapa de estudio</span>'+
+      '<div class="note" style="margin-top:12px">Escribe un tema amplio (p. ej. <b>física cuántica</b>, <b>astronomía</b>, <b>la Revolución Francesa</b>). Se copia un prompt listo; <b>pégalo en Claude</b> y te generará un <b>PDF</b> con todos los mini-temas que debes estudiar para dominarlo, ordenados por nivel.</div>'+
+      '<div class="pr-field"><label>Tema a estudiar</label><input id="pTema" placeholder="física cuántica" autocomplete="off" /></div>'+
+      '<button class="pr-copy" id="pCopy"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg> Copiar prompt</button>'+
+      '<div class="note" id="pMsg" style="margin-top:11px">Niveles: <b>Principiante → Intermedio → Avanzado → Experto</b>, con los mini-temas en orden de estudio.</div>';
+    var inp=document.getElementById("pTema");
+    var btn=document.getElementById("pCopy");
+    var msg=document.getElementById("pMsg");
+    var COPYLBL=btn.innerHTML;
+    function legacy(t,cb){ var ta=document.createElement("textarea"); ta.value=t; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); cb(); }catch(e){ msg.textContent="No se pudo copiar automáticamente."; } document.body.removeChild(ta); }
+    function doCopy(){
+      var tema=(inp.value||"").trim();
+      if(!tema){ inp.focus(); msg.innerHTML='<b style="color:var(--accent)">Escribe primero un tema.</b>'; return; }
+      var text=PROMPT_MAPA.split("{TEMA}").join(tema);
+      function ok(){ btn.innerHTML='✓ ¡Copiado! Pégalo en Claude'; msg.innerHTML='Listo. Abre Claude, <b>pega</b> (Ctrl/Cmd+V) y te generará el PDF.'; setTimeout(function(){ btn.innerHTML=COPYLBL; },2600); }
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok).catch(function(){ legacy(text,ok); }); }
+      else legacy(text,ok);
+    }
+    btn.addEventListener("click",doCopy);
+    inp.addEventListener("keydown",function(e){ if(e.key==="Enter"){ e.preventDefault(); doCopy(); } });
+    setTimeout(function(){ inp.focus(); },60);
+  }
+  function openPrompts(){ sheetTitle.textContent="Prompts"; buildPrompts(); openSheet(); }
+
+  document.getElementById("promptsBtn").addEventListener("click", openPrompts);
   document.getElementById("addBtn").addEventListener("click", openAdd);
   document.getElementById("addClose").addEventListener("click", closeAdd);
   document.getElementById("vReplace").addEventListener("click", ()=> openReplace(vCurrent));
