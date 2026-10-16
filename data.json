@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T10:11:50.221Z",
+  "generatedAt": "2026-10-16T10:27:33.923Z",
   "root": "Temas",
   "folders": [
     {
@@ -122,25 +122,6 @@
           "folders": [
             {
               "type": "folder",
-              "name": "Física cuántica",
-              "path": "Temas/Estudio/Física/Física cuántica",
-              "folders": [],
-              "fichas": [
-                {
-                  "type": "ficha",
-                  "title": "Física cuántica - a fondo",
-                  "subtitle": "",
-                  "path": "Temas/Estudio/Física/Física cuántica/Física cuántica - a fondo.pdf",
-                  "size": 374832
-                }
-              ],
-              "counts": {
-                "fichas": 1,
-                "subtemas": 0
-              }
-            },
-            {
-              "type": "folder",
               "name": "Mecánica cuántica",
               "path": "Temas/Estudio/Física/Mecánica cuántica",
               "folders": [],
@@ -169,8 +150,8 @@
             }
           ],
           "counts": {
-            "fichas": 3,
-            "subtemas": 2
+            "fichas": 2,
+            "subtemas": 1
           }
         }
       ],
@@ -184,7 +165,7 @@
         }
       ],
       "counts": {
-        "fichas": 16,
+        "fichas": 15,
         "subtemas": 3
       }
     },
@@ -417,7 +398,7 @@
   ],
   "fichas": [],
   "counts": {
-    "fichas": 38,
+    "fichas": 37,
     "subtemas": 2
   }
 }
