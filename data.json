@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T07:41:33.013Z",
+  "generatedAt": "2026-10-16T10:11:50.221Z",
   "root": "Temas",
   "folders": [
     {
@@ -101,10 +101,17 @@
               "subtitle": "1968",
               "path": "Temas/Estudio/Carrera espacial/07 · Apolo 8, la Tierra vista de lejos (1968).pdf",
               "size": 295056
+            },
+            {
+              "type": "ficha",
+              "title": "08 · Apolo 11, los últimos doce minutos",
+              "subtitle": "1969",
+              "path": "Temas/Estudio/Carrera espacial/08 · Apolo 11, los últimos doce minutos (1969).pdf",
+              "size": 810667
             }
           ],
           "counts": {
-            "fichas": 8,
+            "fichas": 9,
             "subtemas": 0
           }
         },
@@ -177,7 +184,7 @@
         }
       ],
       "counts": {
-        "fichas": 15,
+        "fichas": 16,
         "subtemas": 3
       }
     },
@@ -410,7 +417,7 @@
   ],
   "fichas": [],
   "counts": {
-    "fichas": 37,
+    "fichas": 38,
     "subtemas": 2
   }
 }
