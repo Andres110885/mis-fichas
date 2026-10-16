@@ -973,30 +973,42 @@
   function openReplace(fi){ if(!fi) return; sheetTitle.textContent = "Actualizar ficha"; buildReplace(fi); openSheet(); }
 
   // ---------- Prompts (genera un prompt listo para pegar en Claude) ----------
-  const PROMPT_MAPA =
-"Quiero dominar **{TEMA}** desde cero y necesito un MAPA DE ESTUDIO para saber exactamente qué estudiar y en qué orden.\n\n"+
-"Actúa como un tutor experto en {TEMA}. Devuélveme:\n\n"+
-"1. Un **resumen breve** (3–5 frases) de qué es {TEMA}, para qué sirve y por qué merece la pena estudiarlo.\n"+
-"2. El temario **descompuesto en mini-temas** concretos y estudiables (ni demasiado amplios ni triviales), agrupados en cuatro niveles: **Principiante, Intermedio, Avanzado y Experto**.\n"+
-"3. Dentro de cada nivel, **ordena los mini-temas en el orden exacto en que debo estudiarlos**, de modo que cada uno se apoye en lo aprendido en los anteriores (progresión real, sin saltos).\n"+
-"4. Para cada mini-tema: un **título corto** y **una sola línea** que diga qué aprenderé y por qué va en ese punto.\n"+
-"5. Si hacen falta **prerrequisitos** (matemáticas o conceptos previos), indícalos al inicio del nivel donde se necesiten.\n\n"+
-"Reglas: no te inventes nada; si algo es discutible o hay varias escuelas, dilo en una línea. Nada de relleno.\n\n"+
-"**Formato de salida: genérame un PDF muy bien presentado**, con la estética de mis fichas de estudio:\n"+
-"- Papel crema #F2EAD8, azul marino #16233F, acento naranja #D2521E, gris acero #6E7A88.\n"+
-"- Títulos en tipografía condensada tipo Oswald; texto en sans serif limpio.\n"+
-"- Cabecera con el título \"Mapa de estudio · {TEMA}\" y el resumen.\n"+
-"- Un bloque por nivel (Principiante → Intermedio → Avanzado → Experto) con los mini-temas numerados en orden.\n"+
-"- Que se lea bien y sea bonito.\n\n"+
-"Llama al archivo: Mapa de estudio - {TEMA}.pdf";
+  const PROMPT_SUBTEMA =
+"Quiero dominar a fondo el tema concreto de **{TEMA}** y necesito una FICHA COMPLETA de estudio para imprimir y guardar.\n\n"+
+"Actúa como un profesor universitario que domina «{TEMA}» y sabe explicarlo con rigor pero con claridad. Tengo formación universitaria (ingeniería química): no simplifiques en exceso. Quiero entenderlo de verdad y en el menor tiempo posible, con TEXTO REAL en prosa (nada de fichas telegráficas ni explicaciones de niño). No te inventes nada; si algo es discutible, dilo.\n\n"+
+"Genérame un DOCUMENTO DE ESTUDIO en formato revista, maquetado y visualmente atractivo, listo para imprimir en A4/PDF, con esta estructura EXACTA:\n\n"+
+"PARTE 0 · INTRODUCCIÓN Y CONTEXTO\n"+
+"- De dónde viene (origen histórico: quién y cuándo), qué es en una frase, y por qué merece la pena dominarlo (aplicaciones reales).\n"+
+"- Una breve guía de cómo leer el documento.\n\n"+
+"PARTE 1 · LO ESENCIAL (regla 80/20 de Pareto)\n"+
+"- El 20 % de conceptos que explican el 80 % del tema: de 6 a 8 conceptos esenciales, cada uno con un título claro y un párrafo de desarrollo real.\n"+
+"- Incluye las ECUACIONES CLAVE que correspondan, cada una en su recuadro y con una LEYENDA que explique qué es cada símbolo.\n"+
+"- Al menos un EJEMPLO NUMÉRICO resuelto (\"en números\") que dé escala al fenómeno.\n"+
+"- Cierra con un \"formulario de un vistazo\", un recuadro de \"detalles menores que puedes dejar para después\" y una frase de \"la idea madre\".\n\n"+
+"PARTE 2 · EXPLICADO POR NIVELES (método Feynman)\n"+
+"- Nivel 1 (como para un niño de 12 años): corto e intuitivo, un párrafo.\n"+
+"- Nivel 2 (bachillerato): ~media página, en prosa, casi sin fórmulas, construyendo la intuición física.\n"+
+"- Nivel 3 (universitario, con rigor): mínimo una página, con el planteamiento formal completo y sus ecuaciones.\n"+
+"- Añade 2 ANALOGÍAS potentes y 1 CONTRAEJEMPLO (\"ojo, no lo confundas con…\") que corrija el malentendido más habitual.\n\n"+
+"PARTE 3 · ERRORES COMUNES\n"+
+"- De 5 a 8 errores o malentendidos típicos. Para cada uno: el error (entre comillas, como lo diría alguien), POR QUÉ OCURRE y una REGLA DE ORO que lo corrige.\n\n"+
+"CIERRE\n"+
+"- Un checklist \"La prueba de que lo dominas\" (5 puntos de autoevaluación).\n"+
+"- Un glosario exprés con los símbolos y términos clave.\n\n"+
+"ECUACIONES (importante): fracciones apiladas (numerador sobre denominador, NUNCA en una sola línea); raíces cuadradas que cubran TODO el radicando; cada fórmula con la explicación de qué es cada símbolo.\n\n"+
+"FORMATO Y ESTILO: revista editorial sobria y elegante. Papel marfil #FBF8F1; tinta casi negra; azul marino #16233F y naranja teja #C14A1B como acentos (en filetes, títulos, recuadros y diagramas, nunca grandes manchas de color). Títulos en Fraunces (serif con carácter), cuerpo en Spectral (serif de lectura), etiquetas y kickers en Oswald en mayúsculas. Maquétalo bien: que las páginas NO queden medio vacías; usa recuadros, numeración de conceptos y diagramas o esquemas simples donde ayuden a entender. Todo en español, en prosa, con negritas para lo importante.\n\n"+
+"Genera el PDF final. Llama al archivo: {TEMA} - ficha completa.pdf";
 
   const PROMPT_AFONDO =
 "Quiero un documento de estudio **a fondo** sobre **{TEMA}**, en formato revista para imprimir y guardar.\n\n"+
-"Actúa como divulgador experto y redacta un **dossier de 5 a 7 páginas A4** que explique {TEMA} de principio a fin: qué es, de dónde viene, sus ideas centrales y sus fronteras y aplicaciones. Progresión de lo básico a lo avanzado, con rigor y sin relleno. No te inventes nada; si algo es discutible, dilo.\n\n"+
+"Actúa como divulgador experto y redacta un **dossier** que explique {TEMA} de principio a fin: qué es, de dónde viene, sus ideas centrales y sus fronteras y aplicaciones. El cuerpo en prosa ocupará unas 5–7 páginas A4; el temario final ocupará además todas las páginas que necesite. Progresión de lo básico a lo avanzado, con rigor y sin relleno. No te inventes nada; si algo es discutible, dilo.\n\n"+
 "Estructura (es un HÍBRIDO: prosa + listado final):\n"+
 "- Portada: título \"{TEMA}\", un subtítulo con gancho, un párrafo de entrada con capitular, una barra lateral de cronología esencial, una cita real (bien atribuida) y un índice.\n"+
 "- CUERPO EN PROSA: 4 o 5 secciones en orden (de los orígenes a la frontera), redactadas como un reportaje a dos columnas, con capitular, cajas \"Idea clave\" y, cuando ayuden, diagramas del mecanismo. Es la parte explicativa, bien escrita y agradable de leer.\n"+
-"- PÁGINA FINAL, RESUMEN EN LISTADO: una página titulada \"El temario, nivel a nivel\" que convierte todo lo anterior en lista de estudio. Cuatro niveles en orden (Principiante, Intermedio, Avanzado, Experto), cada uno con su cabecera; debajo, sus mini-temas NUMERADOS de forma correlativa (1, 2, 3…), UNA LÍNEA por tema, en el orden exacto en que conviene estudiarlos. IMPORTANTE: el título de cada tema debe ser un NOMBRE DE CONCEPTO claro y autosuficiente (el término técnico estándar, con autor o año si ayuda), que sirva tal cual como término de búsqueda para pedir después su ficha a fondo. Cada tema lleva delante una CASILLA vacía (☐) para marcarlo cuando lo haya estudiado. Es el índice que usaré para pedir el detalle de cada subtema.\n\n"+
+"- SECCIÓN FINAL, EL TEMARIO COMPLETO: una sección titulada \"El temario, nivel a nivel\" (ocupa TODAS las páginas que haga falta) que convierte el tema en una lista de estudio EXHAUSTIVA. Cuatro niveles en orden (Principiante, Intermedio, Avanzado, Experto), cada uno con su cabecera; debajo, sus mini-temas NUMERADOS de forma correlativa (1, 2, 3…), UNA LÍNEA por tema, en el orden exacto en que conviene estudiarlos.\n"+
+"  · MUY IMPORTANTE — NO TE QUEDES CORTO: el objetivo es DOMINAR el tema por completo, así que desglosa cada bloque en TODOS sus subtemas concretos, sin agrupar varias ideas en un mismo punto. Para un tema extenso (p. ej. la física cuántica) cada nivel debe tener del orden de 12 a 20 mini-temas, hasta sumar un temario amplio (fácilmente 50–80 subtemas en total); para un tema más acotado, todos los que realmente hagan falta. Es preferible pasarse de detallado que dejarse conceptos fuera: si dudas entre uno o dos puntos, pon dos.\n"+
+"  · El título de cada tema debe ser un NOMBRE DE CONCEPTO claro y autosuficiente (el término técnico estándar, con autor o año si ayuda), que sirva tal cual como término de búsqueda para pedir después su ficha a fondo.\n"+
+"  · Cada tema lleva delante una CASILLA vacía (☐) para marcarlo cuando lo haya estudiado. Es el índice que usaré para pedir el detalle de cada subtema.\n\n"+
 "FORMATO VISUAL (respétalo): maquétalo como una revista editorial, pensada para imprimir y de bajo consumo de tinta.\n"+
 "- Papel marfil #FBF8F1; tinta casi negra; azul marino #16233F y naranja teja #C14A1B como acentos SOLO en filetes, títulos, líneas y diagramas (nunca grandes manchas de color).\n"+
 "- Tipografías: títulos en Fraunces (serif con carácter); cuerpo en Spectral (serif de lectura, justificado a DOS COLUMNAS con capitular); etiquetas y kickers en Oswald en mayúsculas.\n"+
@@ -1005,14 +1017,14 @@
 "Genera el PDF final. Llama al archivo: {TEMA} - a fondo.pdf";
 
   var PROMPTS = {
-    mapa:  { desc:'Te genera un <b>PDF</b> con todos los mini-temas que debes estudiar para dominarlo, <b>ordenados por nivel</b> (Principiante → Experto).', foot:'Ideal para empezar: la hoja de ruta del tema.', text:PROMPT_MAPA },
-    afondo:{ desc:'Te genera un <b>dossier tipo revista</b> (5–7 págs. A4) que explica el tema de principio a fin, con diagramas. Pensado para <b>imprimir y guardar</b>.', foot:'Para profundizar: el tema completo y bonito para archivar.', text:PROMPT_AFONDO }
+    general:{ desc:'Te genera un <b>dossier tipo revista</b> que explica el <b>tema completo</b> de principio a fin, con un <b>temario exhaustivo</b> al final (todos los subtemas por nivel) para ir marcando.', foot:'Para la visión global: todo el tema y su mapa completo de subtemas.', text:PROMPT_AFONDO },
+    afondo: { desc:'Te genera una <b>ficha completa tipo revista</b> de UN subtema: lo esencial (80/20), explicado por niveles (Feynman) y errores comunes, con ecuaciones.', foot:'Para dominar a fondo un subtema concreto en poco tiempo.', text:PROMPT_SUBTEMA }
   };
-  var selPrompt = "mapa";
+  var selPrompt = "general";
 
   function buildPrompts(){
     addBody.innerHTML =
-      '<div class="pr-tabs"><button class="pr-tab" data-k="mapa">Mapa de estudio</button><button class="pr-tab" data-k="afondo">Tema a fondo</button></div>'+
+      '<div class="pr-tabs"><button class="pr-tab" data-k="general">Tema general</button><button class="pr-tab" data-k="afondo">Tema a fondo</button></div>'+
       '<div class="note" id="pDesc" style="margin-top:11px"></div>'+
       '<div class="pr-field"><label>Tema</label><input id="pTema" placeholder="física cuántica" autocomplete="off" /></div>'+
       '<button class="pr-copy" id="pCopy"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg> Copiar prompt</button>'+
